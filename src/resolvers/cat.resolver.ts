@@ -10,6 +10,7 @@ const resolver = {
   },
   Mutation: {
     createCat: middleware(
+      // validateToken(ROLE.admin),
       schemaValidation({
         color: joi.string().valid('black', 'white'),
       }),

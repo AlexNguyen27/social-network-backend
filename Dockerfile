@@ -7,10 +7,6 @@ COPY yarn.lock /app
 
 RUN yarn
 
-COPY . /app
-
-RUN yarn build
-
 EXPOSE 9000
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:dev"]

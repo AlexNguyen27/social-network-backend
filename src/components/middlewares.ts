@@ -9,6 +9,27 @@ export const middleware = (...parameters: any[]) => (root?: any, args?: any, con
   return resolver(root, args, context, info);
 };
 
+// validate token
+// export const tokenValidation = (...allowed) => (...rest) => {
+//   const context = rest[2];
+//   const { token } = context;
+//   if (!token) {
+//     throw new AuthenticationError('Không có token được cung cấp');
+//   }
+//   const { secretKey } = config.jwt;
+//   jwt.verify(token, secretKey, (err, payload) => {
+//     if (err) {
+//       throw new AuthenticationError('Token không hợp lệ');
+//     }
+//     if (allowed.indexOf(payload.role) > -1) {
+//       // eslint-disable-next-line no-param-reassign
+//       rest[2].user = payload;
+//       return rest;
+//     }
+//     throw new AuthorizationError('Không có quyền truy cập tài nguyên');
+//   });
+// };
+
 export const schemaValidation = (schema: any = {}) => (...rest: any[]) => {
   const root = rest[0];
   const args = rest[1];
