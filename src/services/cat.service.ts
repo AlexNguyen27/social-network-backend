@@ -1,6 +1,6 @@
 import sequelize from '../models';
 import Cat from '../models/cat.model';
-import Category from '../models/category.model';
+import Category from '../models/categoryV1.model';
 import { CatCreationInput } from '../types/cat.type';
 
 class CatService {

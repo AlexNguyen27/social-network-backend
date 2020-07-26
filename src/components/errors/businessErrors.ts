@@ -87,3 +87,21 @@ export class DatabaseValidationError extends BusinessError {
     this.extensions.payload = payload;
   }
 }
+
+
+export class AuthenticationError extends BusinessError {
+  constructor(message = 'You need to authenicate to access this resource') {
+      super(message);
+      this.type = 'AuthenticationError';
+      this.status = 401;
+  }
+}
+
+
+export class AuthorizationError extends BusinessError {
+  constructor(message = 'You are not authorized to access this resource') {
+      super(message);
+      this.type = 'AuthorizationError';
+      this.status = 403;
+  }
+}

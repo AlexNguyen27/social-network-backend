@@ -1,7 +1,10 @@
 import { flow } from 'lodash';
 import joi, { ValidationResult } from 'joi';
+import { Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import config from './config';
 
-import { SchemaValidationError } from './errors';
+import { SchemaValidationError, AuthenticationError, AuthorizationError } from './errors';
 
 export const middleware = (...parameters: any[]) => (root?: any, args?: any, context?: any, info?: any) => {
   const resolver = parameters[parameters.length - 1];
@@ -10,7 +13,7 @@ export const middleware = (...parameters: any[]) => (root?: any, args?: any, con
 };
 
 // validate token
-// export const tokenValidation = (...allowed) => (...rest) => {
+// export const tokenValidation = (...allowed: any[]) => (...rest: any[]) => {
 //   const context = rest[2];
 //   const { token } = context;
 //   if (!token) {
@@ -43,4 +46,27 @@ export const schemaValidation = (schema: any = {}) => (...rest: any[]) => {
     throw new SchemaValidationError(validation.error);
   }
   return rest;
+};
+
+export const authorize = (...allowed: string[]) => {
+  const isAllowed = (role: string) => allowed.indexOf(role) > -1;
+  // eslint-disable-next-line complexity
+  return (req: any, res: Response, next: NextFunction) => {
+    const token = req.body.token || req.query.token || req.headers['access-token'];
+    if (!token) {
+      throw new AuthenticationError('No token provided');
+    }
+    const { secretKey } = config.jwt;
+    try {
+      const decoded: any = jwt.verify(token, secretKey);
+      if (decoded && isAllowed(decoded.role)) {
+        res.locals.user = decoded;
+        next();
+      } else {
+        throw new AuthorizationError('Your role is not allowed');
+      }
+    } catch (err) {
+      throw new AuthenticationError('Invalid access token');
+    }
+  };
 };

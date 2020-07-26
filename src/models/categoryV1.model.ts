@@ -1,19 +1,22 @@
 import { Model, DataTypes } from 'sequelize';
 
 import sequelize from '.';
-import Post from './post.model';
-import { POST_STATUS } from '../components/constants';
+import Cat from './cat.model';
 
 class Category extends Model {
   public id: string;
 
   public name: string;
 
-  public posts?: Post[];
+  public createdAt: Date;
+
+  public updatedAt: Date;
+
+  public cats?: Cat[];
 
   static associate() {
-    this.hasMany(Post, {
-      as: 'posts',
+    this.hasMany(Cat, {
+      as: 'cats',
       foreignKey: 'categoryId',
     });
   }
@@ -28,12 +31,9 @@ Category.init({
   name: {
     type: DataTypes.STRING,
   },
-  status: {
-    type: DataTypes.ENUM(POST_STATUS.public, POST_STATUS.private),
-  },
 }, {
   sequelize,
-  modelName: 'CATEGORY',
+  modelName: 'categories',
 });
 
 export default Category;
