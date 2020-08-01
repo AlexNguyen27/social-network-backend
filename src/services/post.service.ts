@@ -1,19 +1,42 @@
 import { ExistsError } from '../components/errors';
-import moment from 'moment';
+// import moment from 'moment';
 import Post from '../models/post.model';
 import { POST_STATUS, ROLE } from '../components/constants';
 import Comment from '../models/comment.model';
 import UserService from './user.service';
 import CategoryService from './category.service';
-import { AuthenticationError } from 'apollo-server';
+import { AuthenticationError } from '../components/errors/businessErrors';
+// import Category from '../models/category.model';
 
+// TODO: AADD GET POST BY FOLLOWER ID
 class PostService {
+
+  // GET POST BY USER ID
   static getPosts(filter: any, user: any) {
 
     let whereCondition;
-    if (user.role === ROLE.user) {
+    // ADMIN
+    if (filter.all) {
+      return Post.findAll({
+        include: [
+          {
+            model: Comment,
+            as: 'comments',
+            required: false,
+          },
+        ],
+        order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']]
+      })
+    }
+
+    if (user.role === ROLE.user && filter.userId === user.userId) {
       whereCondition = {
-        status: POST_STATUS.public
+        userId: filter.userId
+      }
+    } else {
+      whereCondition = {
+        status: POST_STATUS.public,
+        userId: filter.userId
       }
     }
 
@@ -23,30 +46,33 @@ class PostService {
           model: Comment,
           as: 'comments',
           required: false,
-          where: whereCondition
-        }
+        },
       ],
       where: whereCondition,
-      order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']]
+      order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']]
     })
   }
 
   static async createPost(data: any) {
     const { userId, categoryId } = data;
 
-    // CHECK IF USER AND CATEGORY EXITS
-    await UserService.findUserById(userId);
-    await CategoryService.findCategoryById(categoryId);
+    if (!data.status) {
+      data.status = POST_STATUS.private
+    }
 
-    return Post.create({
-      data
-    });
+    // CHECK IF USER AND CATEGORY EXITS
+    const user = await UserService.findUserById(userId);
+    const cate = await CategoryService.findCategoryById(categoryId);
+
+    console.log(user)
+    console.log(cate)
+    return Post.create({ ...data });
   }
 
-  static findPostById(id: string) {
-    return Post.findOne({ where: { id } }).then((cate) => {
-      if (!cate) throw new ExistsError('Post not found');
-      return cate;
+  static findPostById({ id }: { id: string }) {
+    return Post.findOne({ where: { id } }).then((post) => {
+      if (!post) throw new ExistsError('Post not found');
+      return {...post.toJSON()};
     });
   }
 
@@ -54,7 +80,7 @@ class PostService {
     const { id, categoryId } = data;
     const { role, userId } = user;
 
-    const currentPost = await this.findPostById(data.id);
+    const currentPost: any = await this.findPostById({ id: data.id });
 
     if (role === ROLE.user && currentPost.userId !== userId) {
       throw new AuthenticationError('Your role is not allowed');
@@ -64,17 +90,14 @@ class PostService {
       await CategoryService.findCategoryById(categoryId);
     }
 
-    await Post.update(data, { where: { id } });
+    await Post.update({ ...data }, { where: { id } });
 
-    const updatedPost = await this.findPostById(id);
+    const updatedPost = await this.findPostById({ id });
     return updatedPost;
   }
 
   static async deletePost({ id }: { id: string }) {
-    const currentPost = await Post.findOne({ where: { id } });
-    if (!currentPost) {
-      throw new ExistsError('Post not found');
-    }
+    await this.findPostById({ id });
     try {
       await Post.destroy({ where: { id } });
       return {

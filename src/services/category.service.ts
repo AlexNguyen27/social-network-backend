@@ -27,7 +27,7 @@ class CategoryService {
     });
   }
 
-  static createCategory({ name, status = POST_STATUS.private }: { name: string, status: string }) {
+  static createCategory({ name, status = POST_STATUS.public }: { name: string, status: string }) {
     return Category.create({
       name,
       status,

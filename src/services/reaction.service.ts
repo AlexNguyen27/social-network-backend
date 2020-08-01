@@ -1,40 +1,92 @@
 import Reaction from '../models/reaction.model';
 import { ExistsError } from '../components/errors';
+import { Op } from 'sequelize';
 
 class ReactionService {
-
-  static createReaction({ userId, reactionTypeId, postId}: { userId: string, reactionTypeId: string, postId: string}) {
-    return Reaction.create({
-      userId,
-      postId,
-      reactionTypeId
-    });
-  }
-
-  static findReactionById(id: string) {
-    return Reaction.findOne({ where: { id } }).then((reaction) => {
-      if (!reaction) throw new ExistsError('Reaction not found');
-      return reaction;
-    });
-  }
-  static async updateReaction({ id, name }: { id: string, name: string }) {
-    await this.findReactionById(id);
-    await Reaction.update({ name }, { where: { id } });
-
-    const currentReaction = await this.findReactionById(id);
-    return currentReaction;
-  }
-
-  static async deleteReaction({ id }: { id: string }) {
-    const currentReaction = await Reaction.findOne({ where: { id } });
-    if (!currentReaction) {
-      throw new ExistsError('Reaction not found');
+  static async createReaction({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
+    const changeReactionType: any = await this.findReactionByUserIdPostId({ userId, postId });
+    if (changeReactionType && changeReactionType.reactionTypeId === reactionTypeId) {
+      return await this.deleteReaction({ userId, postId, reactionTypeId });
     }
+
+    if (!changeReactionType) {
+      const newReaction = await Reaction.create({ userId, postId, reactionTypeId, POSTId: postId, USERId: userId });
+      if (newReaction) return { status: 200, message: 'Create successfully' };
+    }
+
+    return await this.updateReactionType({ userId, reactionTypeId, postId });
+  }
+
+  static findReactionByUserIdPostId({ userId, postId }: { userId: string, postId: string }) {
+    return Reaction.findOne(
+      {
+        where:
+        {
+          [Op.and]: [
+            { userId: userId },
+            { postId: postId }
+          ]
+        }
+      }).then((reaction) => {
+        if (!reaction) return null;
+        return { ...reaction.toJSON() };
+      });
+  }
+
+  // NOT USER YET
+  // static findReactionByUserIdPostIdReactionTypeId({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
+  //   return Reaction.findOne(
+  //     {
+  //       where:
+  //       {
+  //         [Op.and]: [
+  //           { userId },
+  //           { postId },
+  //           { reactionTypeId }
+  //         ]
+  //       }
+  //     }).then((reaction) => {
+  //       console.log(reaction);
+  //       if (!reaction) return;
+  //       return { ...reaction.toJSON() };
+  //     });
+  // }
+
+
+  static async updateReactionType({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
     try {
-      await Reaction.destroy({ where: { id } });
+      await Reaction.update({ reactionTypeId }, {
+        where:
+        {
+          [Op.and]: [
+            { userId },
+            { postId }
+          ]
+        }
+      });
+
+      return { status: 200, message: 'Update successfully' };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+
+  static async deleteReaction({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
+    try {
+      await Reaction.destroy({
+        where:
+        {
+          [Op.and]: [
+            { userId },
+            { postId },
+            { reactionTypeId }
+          ]
+        }
+      });
       return {
         status: 200,
-        message: 'Success',
+        message: 'Delete successfully',
       };
     } catch (err) {
       throw err;

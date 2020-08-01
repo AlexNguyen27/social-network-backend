@@ -2,6 +2,7 @@ import { AuthenticationError } from 'apollo-server';
 import User from '../models/user.model';
 import Post from '../models/post.model';
 import { ExistsError } from '../components/errors';
+import Comment from '../models/comment.model';
 
 class UserService {
   static getUsers() {
@@ -10,6 +11,12 @@ class UserService {
         {
           model: Post,
           as: 'posts',
+          include: [
+            {
+              model: Comment,
+              as: 'comments'
+            }
+          ]
         },
       ],
     });

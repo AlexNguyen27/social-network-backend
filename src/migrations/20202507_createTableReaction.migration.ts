@@ -35,9 +35,6 @@ const migration = {
         key: 'id',
       },
     },
-    createdAt: {
-      type: DataTypes.DATE,
-    },
   })),
   down: (queryInterface: QueryInterface) => queryInterface.dropTable('REACTION'),
 };

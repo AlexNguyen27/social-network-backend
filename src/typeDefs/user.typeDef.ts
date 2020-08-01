@@ -43,17 +43,6 @@ const typeDef = `
     updatedAt: DateTime,
   }
 
-  type Post {
-    id: String,
-    title: String,
-    description: String,
-    imageUrl: String,
-    status: String,
-    categorId: String,
-    createdAt: DateTime,
-    updatedAt: DateTime
-  }
-
 `;
 
 export default typeDef;

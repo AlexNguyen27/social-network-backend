@@ -53,6 +53,7 @@ class User extends Model {
     });
     // https://sequelize.org/master/manual/assocs.html
     this.belongsToMany(Post, {
+      foreignKey: 'userId',
       through: Reaction,
     });
     this.belongsToMany(User, {
@@ -63,6 +64,9 @@ class User extends Model {
       as: 'toUsers',
       through: Follower,
     });
+    // this.belongsToMany(Post, {
+    //   through: Comment,
+    // });
   }
 }
 

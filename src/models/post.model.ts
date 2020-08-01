@@ -7,6 +7,7 @@ import Category from './category.model';
 import User from './user.model';
 import Reaction from './reaction.model';
 import Report from './report.model';
+import Comment from './comment.model';
 
 class Post extends Model {
   public id: string;
@@ -38,12 +39,20 @@ class Post extends Model {
       as: 'user',
       foreignKey: 'userId',
     });
+
     this.belongsToMany(User, {
+      foreignKey: 'postId',
       through: Reaction,
     });
     // AUTO CREATE PRIMARY KEY OF POST AND USER IN REPORT TABLE
     this.belongsToMany(User, {
+      as: 'reports',
       through: Report,
+    });
+
+    this.hasMany(Comment, {
+      as: 'comments',
+      foreignKey: 'postId'
     });
   }
 }
