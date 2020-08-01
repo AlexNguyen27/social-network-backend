@@ -2,6 +2,19 @@ import { Sequelize } from 'sequelize';
 
 import { config, logger } from '../components';
 
+// import User from './user.model';
+// import School from './school.model';
+// import Report from './report.model';
+// import ReactionType from './reactionType.model';
+// import Reaction from './reaction.model';
+// import Post from './post.model';
+// import Major from './major.model';
+// import Follower from './follower.model';
+// import Experience from './experience.model';
+// import Education from './education.model';
+// import Comment from './comment.model';
+// import Category from './category.model';
+
 const sequelize = new Sequelize({
   dialect: 'postgres',
   username: config.pgUser,
@@ -12,7 +25,8 @@ const sequelize = new Sequelize({
   // eslint-disable-next-line no-console
   logging: config.nodeEnv === 'development' ? console.log : false,
   define: {
-    underscored: true,
+    underscored: false,
+    freezeTableName: true,
   },
 });
 
@@ -21,5 +35,25 @@ sequelize
   .catch((e) => {
     logger().error('Sequelize authentication failed: ', e);
   });
+
+// const models = {
+//   User,
+//   School,
+//   Reaction,
+//   Report,
+//   ReactionType,
+//   Post,
+//   Major,
+//   Follower,
+//   Experience,
+//   Education,
+//   Comment,
+//   Category
+// }
+
+// const db = {
+//   sequelize,
+//   ...models,
+// }
 
 export default sequelize;

@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 
 import sequelize from '.';
-// import User from './user.model';
+import User from './user.model';
 
 class Follower extends Model {
   public fromUserId: string;
@@ -9,6 +9,19 @@ class Follower extends Model {
   public toUserId: string;
 
   public createdAt: Date;
+
+  static associate() {
+    this.belongsTo(User, {
+      as: 'fromUsers',
+      foreignKey: 'fromUserId',
+      onDelete: 'CASCADE',
+    });
+    this.belongsTo(User, {
+      as: 'toUsers',
+      foreignKey: 'toUserId',
+      onDelete: 'CASCADE',
+    });
+  }
 }
 
 Follower.init({

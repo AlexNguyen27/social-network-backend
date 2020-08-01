@@ -11,7 +11,7 @@ import Report from './report.model';
 class Post extends Model {
   public id: string;
 
-  public tile: string;
+  public title: string;
 
   public description: string;
 

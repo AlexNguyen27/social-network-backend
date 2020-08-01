@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-import { middleware, schemaValidation, authorize } from '../components';
+import { middleware, schemaValidation, tokenValidation } from '../components';
 import CatService from '../services/cat.service';
 import { CatCreationInput } from '../types/cat.type';
 import { ROLE } from '../components/constants';
@@ -11,7 +11,7 @@ const resolver = {
   },
   Mutation: {
     createCat: middleware(
-      authorize(ROLE.admin),
+      tokenValidation(ROLE.admin),
       schemaValidation({
         color: joi.string().valid('black', 'white'),
       }),

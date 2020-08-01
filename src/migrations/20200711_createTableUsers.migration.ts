@@ -14,6 +14,7 @@ const migration = {
       validate: {
         notEmpty: true,
       },
+      unique: true,
     },
     firstName: {
       type: DataTypes.STRING,

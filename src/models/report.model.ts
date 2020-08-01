@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-import { REPORT_STATUS } from 'src/components/constants';
+import { REPORT_STATUS } from '../components/constants';
 import sequelize from '.';
 // import Post from './post.model';
 // import User from './user.model';

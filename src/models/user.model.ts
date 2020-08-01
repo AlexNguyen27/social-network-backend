@@ -56,71 +56,78 @@ class User extends Model {
       through: Reaction,
     });
     this.belongsToMany(User, {
+      as: 'fromUsers',
       through: Follower,
     });
-    this.belongsToMany(Post, {
-      through: Reaction,
+    this.belongsToMany(User, {
+      as: 'toUsers',
+      through: Follower,
     });
   }
 }
 
-User.init({
-  id: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    defaultValue: DataTypes.UUIDV4,
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
+User.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
-  },
-  firstName: {
-    type: DataTypes.STRING,
-  },
-  lastName: {
-    type: DataTypes.STRING,
-  },
-  email: {
-    type: DataTypes.TEXT,
-    validate: {
-      isEmail: true,
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: true,
+      },
     },
-  },
-  phone: {
-    type: DataTypes.STRING,
-  },
-  address: {
-    type: DataTypes.TEXT,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      len: {
-        args: [6, 225],
-        msg: 'Password must be more than 6 characters',
+    firstName: {
+      type: DataTypes.STRING,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.TEXT,
+      validate: {
+        isEmail: true,
+      },
+      unique: true,
+    },
+    phone: {
+      type: DataTypes.STRING,
+    },
+    address: {
+      type: DataTypes.TEXT,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      // validate: {
+      //   len: {
+      //     args: [6, 42],
+      //     msg: "Password must be more than 6 and 42 characters",
+      //   },
+      // },
+    },
+    imageUrl: {
+      type: DataTypes.TEXT,
+    },
+    githubUsername: {
+      type: DataTypes.STRING,
+    },
+    role: {
+      type: DataTypes.ENUM(ROLE.user, ROLE.admin),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
       },
     },
   },
-  imageUrl: {
-    type: DataTypes.TEXT,
-  },
-  githubUsername: {
-    type: DataTypes.STRING,
-  },
-  role: {
-    type: DataTypes.ENUM(ROLE.user, ROLE.admin),
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
-}, {
-  sequelize,
-  modelName: 'USER',
-});
+  {
+    sequelize,
+    modelName: 'USER',
+  }
+);
 
 export default User;

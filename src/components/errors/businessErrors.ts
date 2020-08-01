@@ -105,3 +105,9 @@ export class AuthorizationError extends BusinessError {
       this.status = 403;
   }
 }
+
+export class ExistsError extends BusinessError {
+  constructor(message = 'There is exists error happened') {
+    super(message);
+  }
+}
