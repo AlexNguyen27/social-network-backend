@@ -6,7 +6,7 @@ import FollowerService from '../services/follwer.service';
 // TODO: SHOULD HAVE POST FIRST
 const resolver = {
   Mutation: {
-    createFollwer: middleware(
+    createFollower: middleware(
       tokenValidation(ROLE.user),
       schemaValidation({
         toUserId: joi.string().uuid(),

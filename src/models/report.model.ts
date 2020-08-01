@@ -2,8 +2,8 @@ import { Model, DataTypes } from 'sequelize';
 
 import { REPORT_STATUS } from '../components/constants';
 import sequelize from '.';
-// import Post from './post.model';
-// import User from './user.model';
+import User from './user.model';
+import Post from './post.model';
 
 class Report extends Model {
   public reportedBy: string;
@@ -21,6 +21,17 @@ class Report extends Model {
   public createdAt: Date;
 
   public updatedAt: Date;
+
+  static associate() {
+    this.belongsTo(User, {
+      as: 'user',
+      foreignKey: 'reportedBy',
+    });
+    this.belongsTo(Post, {
+      as: 'post',
+      foreignKey: 'postId',
+    });
+  }
 }
 
 Report.init({

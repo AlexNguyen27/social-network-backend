@@ -1,6 +1,6 @@
 const typeDef = `
   extend type Mutation {
-    createFollwer(toUserId: String!): SuccessMessage,
+    createFollower(toUserId: String!): SuccessMessage,
 
     deleteFollower(toUserId: String!): SuccessMessage,
   }

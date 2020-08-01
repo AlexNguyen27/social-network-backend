@@ -46,14 +46,9 @@ class Post extends Model {
     });
     // AUTO CREATE PRIMARY KEY OF POST AND USER IN REPORT TABLE
     this.belongsToMany(User, {
-      as: 'reports',
+      foreignKey: 'postId',
       through: Report,
     });
-
-    // this.belongsToMany(User, {
-    //   foreignKey: 'postId',
-    //   through: Comment,
-    // });
 
     this.hasMany(Comment, {
       as: 'comments',

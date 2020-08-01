@@ -8,6 +8,7 @@ import Comment from './comment.model';
 import Reaction from './reaction.model';
 import Follower from './follower.model';
 import Experience from './experience.model';
+import Report from './report.model';
 
 class User extends Model {
   public id: string;
@@ -56,6 +57,12 @@ class User extends Model {
       foreignKey: 'userId',
       through: Reaction,
     });
+
+    this.belongsToMany(Post, {
+      foreignKey: 'reportedBy',
+      through: Report,
+    });
+
     this.belongsToMany(User, {
       foreignKey: 'fromUserId',
       as: 'fromUser',
