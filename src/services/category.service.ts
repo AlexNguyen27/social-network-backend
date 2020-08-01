@@ -1,4 +1,3 @@
-import sequelize from '../models';
 import Category from '../models/category.model';
 import { ExistsError } from '../components/errors';
 import moment from 'moment';
@@ -23,7 +22,7 @@ class CategoryService {
           where: {...whereCondition}
         },
       ],
-      where: { status: 'public' },
+      where: whereCondition,
       order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']]
     });
   }

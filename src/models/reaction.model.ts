@@ -68,6 +68,7 @@ Reaction.init({
 }, {
   sequelize,
   modelName: 'REACTION',
+  updatedAt: false
 });
 
 export default Reaction;
