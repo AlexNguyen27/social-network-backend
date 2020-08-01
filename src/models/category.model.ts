@@ -11,6 +11,8 @@ class Category extends Model {
 
   public posts?: Post[];
 
+  public createdAt: Date;
+
   static associate() {
     this.hasMany(Post, {
       as: 'posts',
@@ -27,13 +29,19 @@ Category.init({
   },
   name: {
     type: DataTypes.STRING,
+    unique: true,
+    allowNull: false
   },
   status: {
     type: DataTypes.ENUM(POST_STATUS.public, POST_STATUS.private),
   },
+  createdAt: {
+    type: DataTypes.DATE,
+  },
 }, {
   sequelize,
   modelName: 'CATEGORY',
+  updatedAt: false
 });
 
 export default Category;

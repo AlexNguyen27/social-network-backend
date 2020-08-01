@@ -1,9 +1,9 @@
 const typeDef = `
-  extend type Query {
+  type Query {
     login(username: String!, password: String!): LoginOutput
   }
 
-  extend type Mutation {
+  type Mutation {
     register(
       username: String!,
       firstName: String,

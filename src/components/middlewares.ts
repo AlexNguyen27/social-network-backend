@@ -35,6 +35,7 @@ export const tokenValidation = (...allowed: any[]) => (...rest: any[]) => {
 };
 
 export const schemaValidation = (schema: any = {}) => (...rest: any[]) => {
+
   const root = rest[0];
   const args = rest[1];
   const value = {
@@ -44,6 +45,7 @@ export const schemaValidation = (schema: any = {}) => (...rest: any[]) => {
   const validateOptions = { allowUnknown: true, abortEarly: false };
   const validation: ValidationResult<any> = joi.validate(value, schema, validateOptions);
   if (validation.error) {
+    console.error(validation.error);
     throw new SchemaValidationError(validation.error);
   }
   return rest;
