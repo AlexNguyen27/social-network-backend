@@ -57,14 +57,17 @@ class User extends Model {
       through: Reaction,
     });
     this.belongsToMany(User, {
-      as: 'fromUsers',
+      foreignKey: 'fromUserId',
+      as: 'fromUser',
       through: Follower,
     });
     this.belongsToMany(User, {
-      as: 'toUsers',
+      as: 'toUser',
+      foreignKey: 'toUserId',
       through: Follower,
     });
     // this.belongsToMany(Post, {
+    //   foreignKey: 'userId',
     //   through: Comment,
     // });
   }

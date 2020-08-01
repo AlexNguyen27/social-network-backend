@@ -10,7 +10,7 @@ class ReactionService {
     }
 
     if (!changeReactionType) {
-      const newReaction = await Reaction.create({ userId, postId, reactionTypeId, POSTId: postId, USERId: userId });
+      const newReaction = await Reaction.create({ userId, postId, reactionTypeId });
       if (newReaction) return { status: 200, message: 'Create successfully' };
     }
 

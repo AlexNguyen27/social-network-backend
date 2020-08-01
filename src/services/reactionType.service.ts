@@ -32,7 +32,7 @@ class ReactionTypeService {
       await ReactionType.destroy({ where: { id } });
       return {
         status: 200,
-        message: 'Success',
+        message: 'Delete successfully',
       };
     } catch (err) {
       throw err;

@@ -58,7 +58,7 @@ class CategoryService {
       await Category.destroy({ where: { id } });
       return {
         status: 200,
-        message: 'Success',
+        message: 'Delete successfully',
       };
     } catch (err) {
       throw err;

@@ -12,12 +12,12 @@ class Follower extends Model {
 
   static associate() {
     this.belongsTo(User, {
-      as: 'fromUsers',
+      as: 'fromUser',
       foreignKey: 'fromUserId',
       onDelete: 'CASCADE',
     });
     this.belongsTo(User, {
-      as: 'toUsers',
+      as: 'toUser',
       foreignKey: 'toUserId',
       onDelete: 'CASCADE',
     });
@@ -45,6 +45,7 @@ Follower.init({
 }, {
   sequelize,
   modelName: 'FOLLOWER',
+  updatedAt: false
 });
 
 export default Follower;

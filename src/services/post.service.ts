@@ -9,6 +9,7 @@ import { AuthenticationError } from '../components/errors/businessErrors';
 // import Category from '../models/category.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
+// TODO: GET REACTION OF THE POST ALSO
 class PostService {
 
   // GET POST BY USER ID
@@ -61,11 +62,9 @@ class PostService {
     }
 
     // CHECK IF USER AND CATEGORY EXITS
-    const user = await UserService.findUserById(userId);
-    const cate = await CategoryService.findCategoryById(categoryId);
+    await UserService.findUserById(userId);
+    await CategoryService.findCategoryById(categoryId);
 
-    console.log(user)
-    console.log(cate)
     return Post.create({ ...data });
   }
 
@@ -102,7 +101,7 @@ class PostService {
       await Post.destroy({ where: { id } });
       return {
         status: 200,
-        message: 'Success',
+        message: 'Delete successfully',
       };
     } catch (err) {
       throw err;

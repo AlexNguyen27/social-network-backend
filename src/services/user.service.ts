@@ -25,7 +25,7 @@ class UserService {
   static async findUserById(id: string) {
     return User.findOne({ where: { id } }).then((user) => {
       if (!user) throw new ExistsError('User not found');
-      return user;
+      return { ...user.toJSON() };
     });
   }
 
@@ -62,7 +62,7 @@ class UserService {
       await User.destroy({ where: { id } });
       return {
         status: 200,
-        message: 'Success',
+        message: 'Delete successfully',
       };
     } catch (err) {
       throw err;

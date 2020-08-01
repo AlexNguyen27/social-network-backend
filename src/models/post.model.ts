@@ -50,10 +50,15 @@ class Post extends Model {
       through: Report,
     });
 
+    // this.belongsToMany(User, {
+    //   foreignKey: 'postId',
+    //   through: Comment,
+    // });
+
     this.hasMany(Comment, {
       as: 'comments',
       foreignKey: 'postId'
-    });
+    })
   }
 }
 
