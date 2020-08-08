@@ -5,6 +5,7 @@ const migration = {
   up: (queryInterface: QueryInterface) => queryInterface.sequelize.transaction((t) => queryInterface.createTable('REPORT', {
     reportedBy: {
       type: DataTypes.UUID,
+      primaryKey: true,
       validate: {
         notEmpty: true,
       },
@@ -18,6 +19,7 @@ const migration = {
     postId: {
       type: DataTypes.UUID,
       allowNull: false,
+      primaryKey: true,
       validate: {
         notEmpty: true,
       },

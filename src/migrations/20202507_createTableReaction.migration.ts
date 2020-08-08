@@ -8,6 +8,7 @@ const migration = {
       validate: {
         notEmpty: true,
       },
+      primaryKey: true,
       references: {
         model: 'USER',
         key: 'id',
@@ -27,6 +28,7 @@ const migration = {
     postId: {
       type: DataTypes.UUID,
       allowNull: false,
+      primaryKey: true,
       validate: {
         notEmpty: true,
       },

@@ -5,6 +5,7 @@ const migration = {
     await queryInterface.createTable('FOLLOWER', {
       fromUserId: {
         type: DataTypes.UUID,
+        primaryKey: true,
         validate: {
           notEmpty: true,
         },
@@ -20,6 +21,7 @@ const migration = {
         validate: {
           notEmpty: true,
         },
+        primaryKey: true,
         references: {
           model: 'USER',
           key: 'id',
