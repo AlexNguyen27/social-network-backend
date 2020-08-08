@@ -18,8 +18,8 @@ const migration = {
       type: DataTypes.ENUM(POST_STATUS.public, POST_STATUS.private),
     },
     createdAt: {
-      type: DataTypes.DATE
-    }
+      type: DataTypes.DATE,
+    },
   }, {
     transaction: t,
   })),

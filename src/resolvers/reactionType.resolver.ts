@@ -21,7 +21,7 @@ const resolver = {
     deleteReactionType: middleware(
       tokenValidation(ROLE.admin),
       (_: any, args: { id: string }) => ReactionType.deleteReactionType(args),
-    )
+    ),
   },
 };
 

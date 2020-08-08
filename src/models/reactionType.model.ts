@@ -25,7 +25,7 @@ ReactionType.init({
 }, {
   sequelize,
   modelName: 'REACTION_TYPE',
-  timestamps: false
+  timestamps: false,
 });
 
 export default ReactionType;

@@ -52,8 +52,8 @@ class Post extends Model {
 
     this.hasMany(Comment, {
       as: 'comments',
-      foreignKey: 'postId'
-    })
+      foreignKey: 'postId',
+    });
   }
 }
 

@@ -36,7 +36,7 @@ Reaction.init({
       notEmpty: true,
     },
     references: {
-      model: "USER",
+      model: 'USER',
       key: 'id',
     },
   },
@@ -47,7 +47,7 @@ Reaction.init({
       notEmpty: true,
     },
     references: {
-      model: "POST",
+      model: 'POST',
       key: 'id',
     },
   },
@@ -65,7 +65,7 @@ Reaction.init({
 }, {
   sequelize,
   modelName: 'REACTION',
-  timestamps: false
+  timestamps: false,
 });
 
 export default Reaction;

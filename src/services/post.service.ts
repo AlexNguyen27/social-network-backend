@@ -11,10 +11,8 @@ import { AuthenticationError } from '../components/errors/businessErrors';
 // TODO: AADD GET POST BY FOLLOWER ID
 // TODO: GET REACTION OF THE POST ALSO
 class PostService {
-
   // GET POST BY USER ID
   static getPosts(filter: any, user: any) {
-
     let whereCondition;
     // ADMIN
     if (filter.all) {
@@ -26,19 +24,19 @@ class PostService {
             required: false,
           },
         ],
-        order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']]
-      })
+        order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']],
+      });
     }
 
     if (user.role === ROLE.user && filter.userId === user.userId) {
       whereCondition = {
-        userId: filter.userId
-      }
+        userId: filter.userId,
+      };
     } else {
       whereCondition = {
         status: POST_STATUS.public,
-        userId: filter.userId
-      }
+        userId: filter.userId,
+      };
     }
 
     return Post.findAll({
@@ -50,15 +48,15 @@ class PostService {
         },
       ],
       where: whereCondition,
-      order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']]
-    })
+      order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']],
+    });
   }
 
   static async createPost(data: any) {
     const { userId, categoryId } = data;
 
     if (!data.status) {
-      data.status = POST_STATUS.private
+      data.status = POST_STATUS.private;
     }
 
     // CHECK IF USER AND CATEGORY EXITS
@@ -71,7 +69,7 @@ class PostService {
   static findPostById({ id }: { id: string }) {
     return Post.findOne({ where: { id } }).then((post) => {
       if (!post) throw new ExistsError('Post not found');
-      return {...post.toJSON()};
+      return { ...post.toJSON() };
     });
   }
 
@@ -110,4 +108,3 @@ class PostService {
 }
 
 export default PostService;
-

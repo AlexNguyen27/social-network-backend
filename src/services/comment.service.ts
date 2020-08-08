@@ -15,7 +15,7 @@ class CommentService {
           as: 'user',
         },
       ],
-      where: { postId }
+      where: { postId },
     });
   }
 
@@ -24,14 +24,14 @@ class CommentService {
 
     // CHECK IF USERID AND POSTID IS EXITS
     await UserService.findUserById(userId);
-    await PostService.findPostById({ id: postId })
+    await PostService.findPostById({ id: postId });
 
     if (data.parentId) {
-      await this.findCommentById(data.parentId, "Parent comment id not found");
+      await this.findCommentById(data.parentId, 'Parent comment id not found');
     }
 
     return Comment.create({
-      ...data
+      ...data,
     });
   }
 
@@ -60,7 +60,7 @@ class CommentService {
     await this.findCommentById(id);
 
     const hasChildsCmt = await Comment.findAll({
-      where: { parentId: id }
+      where: { parentId: id },
     });
 
     if (hasChildsCmt.length > 0) {

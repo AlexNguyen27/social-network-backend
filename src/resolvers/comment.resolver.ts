@@ -12,7 +12,7 @@ const resolver = {
         postId: joi.string().uuid(),
       }),
       (_: any, args: any) => CommentService.getCommentsbyPostId(args),
-    )
+    ),
   },
   Mutation: {
     createComment: middleware(
@@ -40,8 +40,8 @@ const resolver = {
       schemaValidation({
         id: joi.string().uuid(),
       }),
-      (_: any, args: { id: string } ) => CommentService.deleteComment(args),
-    )
+      (_: any, args: { id: string }) => CommentService.deleteComment(args),
+    ),
   },
 };
 

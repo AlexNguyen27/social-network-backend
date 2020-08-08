@@ -30,7 +30,7 @@ Category.init({
   name: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
   },
   status: {
     type: DataTypes.ENUM(POST_STATUS.public, POST_STATUS.private),
@@ -41,7 +41,7 @@ Category.init({
 }, {
   sequelize,
   modelName: 'CATEGORY',
-  updatedAt: false
+  updatedAt: false,
 });
 
 export default Category;

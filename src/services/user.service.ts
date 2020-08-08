@@ -14,9 +14,9 @@ class UserService {
           include: [
             {
               model: Comment,
-              as: 'comments'
-            }
-          ]
+              as: 'comments',
+            },
+          ],
         },
       ],
     });

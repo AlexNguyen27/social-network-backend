@@ -45,7 +45,7 @@ Follower.init({
 }, {
   sequelize,
   modelName: 'FOLLOWER',
-  updatedAt: false
+  updatedAt: false,
 });
 
 export default Follower;

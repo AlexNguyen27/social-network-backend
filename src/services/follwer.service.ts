@@ -1,17 +1,15 @@
+import { Op } from 'sequelize';
 import { ExistsError } from '../components/errors';
 import Follower from '../models/follower.model';
-import { Op } from 'sequelize';
 import UserService from './user.service';
 
 class FollowerService {
-
   static async createFollower({ toUserId }: { toUserId: string }, user: any) {
-
     const exitsFollower: any = await this.findFollower({ toUserId, fromUserId: user.userId });
     if (!exitsFollower) {
       try {
         await Follower.create({ toUserId, fromUserId: user.userId });
-        return { status: 200, message: "Create follower successfully" };
+        return { status: 200, message: 'Create follower successfully' };
       } catch (err) {
         throw err;
       }
@@ -20,15 +18,15 @@ class FollowerService {
     return await this.deleteFollower({ toUserId }, user);
   }
 
-  static findFollower({ toUserId, fromUserId }: { toUserId: string, fromUserId: string }, ) {
+  static findFollower({ toUserId, fromUserId }: { toUserId: string; fromUserId: string },) {
     return Follower.findOne(
       {
         where: {
           [Op.and]: [
             { toUserId },
-            { fromUserId }
-          ]
-        }
+            { fromUserId },
+          ],
+        },
       }
     ).then((follower) => {
       if (!follower) return null;
@@ -48,10 +46,11 @@ class FollowerService {
           where: {
             [Op.and]: [
               { toUserId },
-              { fromUserId: userId }
-            ]
-          }
-        });
+              { fromUserId: userId },
+            ],
+          },
+        }
+      );
       return {
         status: 200,
         message: 'Unfollow successfully',

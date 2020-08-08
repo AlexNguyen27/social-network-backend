@@ -1,17 +1,16 @@
+import moment from 'moment';
 import Category from '../models/category.model';
 import { ExistsError } from '../components/errors';
-import moment from 'moment';
 import Post from '../models/post.model';
 import { POST_STATUS, ROLE } from '../components/constants';
 
 class CategoryService {
   static getCategories(user: any) {
-
     let whereCondition;
     if (user.role === ROLE.user) {
       whereCondition = {
-        status: POST_STATUS.public
-      }
+        status: POST_STATUS.public,
+      };
     }
     return Category.findAll({
       include: [
@@ -19,19 +18,19 @@ class CategoryService {
           model: Post,
           as: 'posts',
           required: false,
-          where: {...whereCondition}
+          where: { ...whereCondition },
         },
       ],
       where: whereCondition,
-      order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']]
+      order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']],
     });
   }
 
-  static createCategory({ name, status = POST_STATUS.public }: { name: string, status: string }) {
+  static createCategory({ name, status = POST_STATUS.public }: { name: string; status: string }) {
     return Category.create({
       name,
       status,
-      createdAt: moment()
+      createdAt: moment(),
     });
   }
 
@@ -41,7 +40,8 @@ class CategoryService {
       return cate;
     });
   }
-  static async updateCategory({ id, name, status }: { id: string, name: string, status: string }) {
+
+  static async updateCategory({ id, name, status }: { id: string; name: string; status: string }) {
     await this.findCategoryById(id);
     await Category.update({ name, status }, { where: { id } });
 

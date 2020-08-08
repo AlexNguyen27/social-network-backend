@@ -1,10 +1,10 @@
-import { ExistsError } from "../components/errors";
-import Report from "../models/report.model";
-import Post from "../models/post.model";
-import User from "../models/user.model";
-import UserService from "./user.service";
-import PostService from "./post.service";
-import { Op } from "sequelize";
+import { Op } from 'sequelize';
+import { ExistsError } from '../components/errors';
+import Report from '../models/report.model';
+import Post from '../models/post.model';
+import User from '../models/user.model';
+import UserService from './user.service';
+import PostService from './post.service';
 
 class ReportService {
   static getReports() {
@@ -12,14 +12,14 @@ class ReportService {
       include: [
         {
           model: Post,
-          as: "post",
+          as: 'post',
         },
         {
           model: User,
-          as: "user",
+          as: 'user',
         },
       ],
-      order: [["createdAt", "DESC"]],
+      order: [['createdAt', 'DESC']],
     });
   }
 
@@ -42,11 +42,11 @@ class ReportService {
       {
         [Op.and]: [
           { reportedBy },
-          { postId }
-        ]
-      }
+          { postId },
+        ],
+      },
     }).then((report) => {
-      if (!report) throw new ExistsError("Category not found");
+      if (!report) throw new ExistsError('Category not found');
       return report;
     });
   }
@@ -61,9 +61,9 @@ class ReportService {
       {
         [Op.and]: [
           { reportedBy },
-          { postId }
-        ]
-      }
+          { postId },
+        ],
+      },
     });
 
     const currentReport = await this.findReportById(data.id, postId);
@@ -79,13 +79,13 @@ class ReportService {
         {
           [Op.and]: [
             { reportedBy },
-            { postId }
-          ]
-        }
+            { postId },
+          ],
+        },
       });
       return {
         status: 200,
-        message: "Delete successfully",
+        message: 'Delete successfully',
       };
     } catch (err) {
       throw err;

@@ -20,9 +20,9 @@ const resolver = {
         imageUrl: joi.string(),
         reportedBy: joi.string().uuid(),
         postId: joi.string().uuid(),
-        status: joi.string().valid(Object.values(REPORT_STATUS))
+        status: joi.string().valid(Object.values(REPORT_STATUS)),
       }),
-      (_: any, args: any ) => ReportService.createReport(args),
+      (_: any, args: any) => ReportService.createReport(args),
     ),
 
     updateRerport: middleware(
@@ -31,9 +31,9 @@ const resolver = {
         description: joi.string(),
         reportedBy: joi.string().uuid(),
         postId: joi.string().uuid(),
-        status: joi.string().valid(Object.values(REPORT_STATUS))
+        status: joi.string().valid(Object.values(REPORT_STATUS)),
       }),
-      (_: any, args: any, { user }: any ) => ReportService.updateRerport(args),
+      (_: any, args: any, { user }: any) => ReportService.updateRerport(args),
     ),
 
     deleteReport: middleware(
@@ -43,7 +43,7 @@ const resolver = {
         postId: joi.string().uuid(),
       }),
       (_: any, args: { id: string }) => ReportService.deleteReport(args),
-    )
+    ),
   },
 };
 

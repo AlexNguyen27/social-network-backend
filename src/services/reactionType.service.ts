@@ -2,10 +2,9 @@ import ReactionType from '../models/reactionType.model';
 import { ExistsError } from '../components/errors';
 
 class ReactionTypeService {
-
   static createReactionType({ name }: { name: string }) {
     return ReactionType.create({
-      name
+      name,
     });
   }
 
@@ -15,7 +14,8 @@ class ReactionTypeService {
       return ReactionType;
     });
   }
-  static async updateReactionType({ id, name }: { id: string, name: string }) {
+
+  static async updateReactionType({ id, name }: { id: string; name: string }) {
     await this.findReactionTypeById(id);
     await ReactionType.update({ name }, { where: { id } });
 

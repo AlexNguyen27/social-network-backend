@@ -13,7 +13,7 @@ const resolver = {
         postId: joi.string().uuid(),
         reactionTypeId: joi.string().uuid(),
       }),
-      (_: any, args: { userId: string, reactionTypeId: string, postId: string }) => ReactionService.createReaction(args),
+      (_: any, args: { userId: string; reactionTypeId: string; postId: string }) => ReactionService.createReaction(args),
     ),
   },
 };

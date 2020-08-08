@@ -12,7 +12,7 @@ const resolver = {
     getPostById: middleware(
       tokenValidation(ROLE.admin, ROLE.user),
       (_: any, args: { id: string }) => PostService.findPostById(args),
-    )
+    ),
   },
   Mutation: {
     createPost: middleware(
@@ -23,9 +23,9 @@ const resolver = {
         imageUrl: joi.string(),
         categoryId: joi.string().uuid(),
         userId: joi.string().uuid(),
-        status: joi.string().valid(Object.values(POST_STATUS))
+        status: joi.string().valid(Object.values(POST_STATUS)),
       }),
-      (_: any, args: any ) => PostService.createPost(args),
+      (_: any, args: any) => PostService.createPost(args),
     ),
 
     updatePost: middleware(
@@ -35,9 +35,9 @@ const resolver = {
         title: joi.string(),
         description: joi.string(),
         imageUrl: joi.string(),
-        status: joi.string().valid(Object.values(POST_STATUS))
+        status: joi.string().valid(Object.values(POST_STATUS)),
       }),
-      (_: any, args: any, { user }: any ) => PostService.updatePost(args, user),
+      (_: any, args: any, { user }: any) => PostService.updatePost(args, user),
     ),
 
     deletePost: middleware(
@@ -46,7 +46,7 @@ const resolver = {
         id: joi.string().uuid(),
       }),
       (_: any, args: { id: string }) => PostService.deletePost(args),
-    )
+    ),
   },
 };
 

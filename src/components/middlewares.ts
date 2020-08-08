@@ -35,7 +35,6 @@ export const tokenValidation = (...allowed: any[]) => (...rest: any[]) => {
 };
 
 export const schemaValidation = (schema: any = {}) => (...rest: any[]) => {
-
   const root = rest[0];
   const args = rest[1];
   const value = {

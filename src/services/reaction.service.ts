@@ -1,9 +1,9 @@
+import { Op } from 'sequelize';
 import Reaction from '../models/reaction.model';
 import { ExistsError } from '../components/errors';
-import { Op } from 'sequelize';
 
 class ReactionService {
-  static async createReaction({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
+  static async createReaction({ userId, reactionTypeId, postId }: { userId: string; reactionTypeId: string; postId: string }) {
     const changeReactionType: any = await this.findReactionByUserIdPostId({ userId, postId });
     if (changeReactionType && changeReactionType.reactionTypeId === reactionTypeId) {
       return await this.deleteReaction({ userId, postId, reactionTypeId });
@@ -17,20 +17,21 @@ class ReactionService {
     return await this.updateReactionType({ userId, reactionTypeId, postId });
   }
 
-  static findReactionByUserIdPostId({ userId, postId }: { userId: string, postId: string }) {
+  static findReactionByUserIdPostId({ userId, postId }: { userId: string; postId: string }) {
     return Reaction.findOne(
       {
         where:
         {
           [Op.and]: [
-            { userId: userId },
-            { postId: postId }
-          ]
-        }
-      }).then((reaction) => {
-        if (!reaction) return null;
-        return { ...reaction.toJSON() };
-      });
+            { userId },
+            { postId },
+          ],
+        },
+      }
+    ).then((reaction) => {
+      if (!reaction) return null;
+      return { ...reaction.toJSON() };
+    });
   }
 
   // NOT USER YET
@@ -52,17 +53,16 @@ class ReactionService {
   //     });
   // }
 
-
-  static async updateReactionType({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
+  static async updateReactionType({ userId, reactionTypeId, postId }: { userId: string; reactionTypeId: string; postId: string }) {
     try {
       await Reaction.update({ reactionTypeId }, {
         where:
         {
           [Op.and]: [
             { userId },
-            { postId }
-          ]
-        }
+            { postId },
+          ],
+        },
       });
 
       return { status: 200, message: 'Update successfully' };
@@ -71,8 +71,7 @@ class ReactionService {
     }
   }
 
-
-  static async deleteReaction({ userId, reactionTypeId, postId }: { userId: string, reactionTypeId: string, postId: string }) {
+  static async deleteReaction({ userId, reactionTypeId, postId }: { userId: string; reactionTypeId: string; postId: string }) {
     try {
       await Reaction.destroy({
         where:
@@ -80,9 +79,9 @@ class ReactionService {
           [Op.and]: [
             { userId },
             { postId },
-            { reactionTypeId }
-          ]
-        }
+            { reactionTypeId },
+          ],
+        },
       });
       return {
         status: 200,
