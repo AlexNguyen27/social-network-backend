@@ -22,6 +22,7 @@ const app = () => {
         token,
       };
     },
+    playground: true,
   });
 
   server
