@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
+import { logger } from 'juno-js';
 
-import { config, logger } from '../components';
+import { config } from '../components';
 
 // import User from './user.model';
 // import School from './school.model';
