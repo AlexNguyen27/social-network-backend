@@ -44,8 +44,7 @@
     "querystring": "^0.2.0",
     "react-through": "^1.1.4",
     "sequelize": "^5.21.6",
-    "umzug": "^2.3.0",
-    "winston": "^3.2.1"
+    "umzug": "^2.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
