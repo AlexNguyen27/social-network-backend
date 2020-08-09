@@ -13,12 +13,12 @@ class AuthService {
     const user = await User.findOne({ where: { username } });
 
     if (!user) {
-      throw new AuthenticationError('Account not found');
+      throw new AuthenticationError('Username or password incorrect!');
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      throw new AuthenticationError('Password is incorrect!');
+      throw new AuthenticationError('Username or password is incorrect!');
     }
 
     const { id, role } = user;
@@ -43,15 +43,15 @@ class AuthService {
       throw new AuthenticationError('Password must be more than 6 and 42 characters');
     }
 
-    try {
-      const exitUser = await User.findOne({ where: { username: userData.username } });
+    // try {
+    //   const exitUser = await User.findOne({ where: { username: userData.username } });
 
-      if (exitUser) {
-        throw new ExistsError('Username already exits');
-      }
-    } catch (err) {
-      throw err;
-    }
+    //   if (exitUser) {
+    //     throw new ExistsError('Username already exits');
+    //   }
+    // } catch (err) {
+    //   throw err;
+    // }
 
     const hashPassword = await bcrypt.hash(password, 10);
 

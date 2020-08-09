@@ -27,6 +27,7 @@ class Follower extends Model {
 Follower.init({
   fromUserId: {
     type: DataTypes.UUID,
+    primaryKey: true,
     references: {
       model: 'USER',
       key: 'id',
@@ -34,6 +35,7 @@ Follower.init({
   },
   toUserId: {
     type: DataTypes.UUID,
+    primaryKey: true,
     references: {
       model: 'USER',
       key: 'id',

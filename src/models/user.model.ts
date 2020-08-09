@@ -90,7 +90,10 @@ User.init(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        name: 'username',
+        msg: "Username is already exits"
+      },
       validate: {
         notEmpty: true,
       },
@@ -104,15 +107,21 @@ User.init(
     email: {
       type: DataTypes.TEXT,
       validate: {
-        isEmail: true,
+        isEmail: {
+          msg: 'Email is invalid'
+        },
+
       },
-      unique: true,
+      unique: {
+        name: 'email',
+        msg: 'Email is already exits'
+      },
     },
     phone: {
       type: DataTypes.STRING,
     },
     address: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSONB,
     },
     password: {
       type: DataTypes.STRING,

@@ -32,7 +32,7 @@ const migration = {
       type: DataTypes.STRING,
     },
     address: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSONB,
     },
     password: {
       type: DataTypes.STRING,

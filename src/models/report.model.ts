@@ -38,6 +38,7 @@ Report.init({
   reportedBy: {
     type: DataTypes.UUID,
     allowNull: false,
+    primaryKey: true,
     references: {
       model: 'USER',
       key: 'id',
@@ -46,6 +47,7 @@ Report.init({
   postId: {
     type: DataTypes.UUID,
     allowNull: false,
+    primaryKey: true,
     references: {
       model: 'POST',
       key: 'id',

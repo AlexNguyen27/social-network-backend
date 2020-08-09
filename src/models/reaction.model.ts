@@ -32,6 +32,7 @@ Reaction.init({
   userId: {
     type: DataTypes.UUID,
     allowNull: false,
+    primaryKey: true,
     validate: {
       notEmpty: true,
     },
@@ -43,6 +44,7 @@ Reaction.init({
   postId: {
     type: DataTypes.UUID,
     allowNull: false,
+    primaryKey: true,
     validate: {
       notEmpty: true,
     },
