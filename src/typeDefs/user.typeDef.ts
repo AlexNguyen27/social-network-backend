@@ -5,20 +5,23 @@ const typeDef = `
 
   extend type Mutation {
     updateUser(
-      id: String,
-      username: String,
-      firstName: String,
-      lastName: String,
-      email: String,
-      phone: String,
-      address: String,
-      password: String,
-      imageUrl: String,
-      githubUsername: String,
-      role: String,
+      info: InfoInput
     ): User,
 
     deleteUser(id: String!): SuccessMessage,
+  }
+
+  input InfoInput {
+    id: String,
+    username: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    phone: String,
+    address: String,
+    imageUrl: String,
+    githubUsername: String,
+    role: String,
   }
 
   type SuccessMessage {

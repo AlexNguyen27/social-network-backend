@@ -36,7 +36,8 @@ class UserService {
     });
   }
 
-  static async updateUser(data: any, user: any) {
+  static async updateUser(input: any, user: any) {
+    let data = input.info;
     // IF HAS DATA ID THEN UPDATE USER ID
     // ELSE UPDATE TOKEN USER ID
     // TODO: only admin can edit role
@@ -46,9 +47,12 @@ class UserService {
       throw new AuthenticationError('Your role is not allowed');
     }
 
-    await this.findUserById(userId);
-    await User.update(data, { where: { id: userId }, returning: true });
-
+    const userData: any = await this.findUserById(userId);
+    if (userData.username === input.username) {
+      delete data.username;
+    }
+    const res = await User.update(data, { where: { id: userId }, returning: true });
+    console.log('res---------------------', res[1]);
     const currentUser = await this.findUserById(userId);
     return currentUser;
   }

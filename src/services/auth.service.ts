@@ -29,6 +29,7 @@ class AuthService {
       role,
     };
 
+    // todo : add expired token
     const token = jwt.sign(payload, secretKey, { algorithm: 'HS256' });
     return {
       token,

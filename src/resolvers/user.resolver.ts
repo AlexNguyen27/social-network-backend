@@ -7,7 +7,10 @@ import { ROLE } from '../components/constants';
 
 const resolver = {
   Query: {
-    getUsers: () => UserService.getUsers(),
+    getUsers: middleware(
+      tokenValidation(ROLE.admin),
+      () => UserService.getUsers()
+    ),
   },
   Mutation: {
     updateUser: middleware(

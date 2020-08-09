@@ -119,6 +119,12 @@ User.init(
     },
     phone: {
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [10, 11],
+          msg: "Phone number must be 10 or 11 numbers",
+        }
+      }
     },
     address: {
       type: DataTypes.JSONB,
