@@ -36,6 +36,7 @@
     "graphql-tools": "^4.0.7",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
+    "juno-js": "^0.1.0",
     "lodash": "^4.17.15",
     "moment": "^2.27.0",
     "pg": "^8.0.2",
@@ -43,8 +44,7 @@
     "querystring": "^0.2.0",
     "react-through": "^1.1.4",
     "sequelize": "^5.21.6",
-    "umzug": "^2.3.0",
-    "winston": "^3.2.1"
+    "umzug": "^2.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
