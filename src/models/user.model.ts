@@ -95,7 +95,9 @@ User.init(
         msg: "Username is already exits"
       },
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          msg: 'Username is required'
+        },
       },
     },
     firstName: {
@@ -132,18 +134,12 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      // validate: {
-      //   len: {
-      //     args: [6, 42],
-      //     msg: "Password must be more than 6 and 42 characters",
-      //   },
-      // },
     },
     imageUrl: {
       type: DataTypes.TEXT,
     },
     githubUsername: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     role: {
       type: DataTypes.ENUM(ROLE.user, ROLE.admin),

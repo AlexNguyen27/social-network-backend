@@ -48,7 +48,7 @@ const migration = {
       type: DataTypes.TEXT,
     },
     githubUsername: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     role: {
       type: DataTypes.ENUM(ROLE.user, ROLE.admin),
