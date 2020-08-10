@@ -21,6 +21,8 @@ const app = () => {
         token,
       };
     },
+    introspection: true,
+    playground: true,
   });
 
   server
