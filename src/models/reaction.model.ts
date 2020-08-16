@@ -2,6 +2,8 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '.';
 
 import ReactionType from './reactionType.model';
+import User from './user.model';
+import Post from './post.model';
 
 class Reaction extends Model {
   public userId: string;
@@ -13,14 +15,14 @@ class Reaction extends Model {
   public createdAt: Date;
 
   static associate() {
-    // this.belongsTo(User, {
-    //   as: 'user',
-    //   foreignKey: 'userId'
-    // });
-    // this.belongsTo(Post, {
-    //   as: 'post',
-    //   foreignKey: 'postId'
-    // });
+    this.belongsTo(User, {
+      as: 'user',
+      foreignKey: 'userId'
+    });
+    this.belongsTo(Post, {
+      as: 'post',
+      foreignKey: 'postId'
+    });
     this.belongsTo(ReactionType, {
       as: 'reactionType',
       foreignKey: 'reactionTypeId',

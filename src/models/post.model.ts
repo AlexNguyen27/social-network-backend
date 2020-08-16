@@ -42,7 +42,13 @@ class Post extends Model {
 
     this.belongsToMany(User, {
       foreignKey: 'postId',
+      as: 'post',
       through: Reaction,
+    });
+
+    this.hasMany(Reaction, {
+      foreignKey: 'postId',
+      as: 'reactions',
     });
     // AUTO CREATE PRIMARY KEY OF POST AND USER IN REPORT TABLE
     this.belongsToMany(User, {

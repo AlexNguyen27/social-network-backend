@@ -31,12 +31,14 @@ const typeDef = `
 
   type Post {
     id: String,
+    userId: String,
     title: String,
     description: String,
     imageUrl: String,
     status: String,
-    categorId: String,
-    comments: [Comment]
+    categoryId: String,
+    comments: [Comment],
+    reactions: [Reaction]
     createdAt: DateTime,
     updatedAt: DateTime
   }

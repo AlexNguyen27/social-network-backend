@@ -4,8 +4,10 @@ import Post from '../models/post.model';
 import { POST_STATUS, ROLE } from '../components/constants';
 import Comment from '../models/comment.model';
 import UserService from './user.service';
+import { Op } from 'sequelize';
 import CategoryService from './category.service';
 import { AuthenticationError } from '../components/errors/businessErrors';
+import Reaction from '../models/reaction.model';
 // import Category from '../models/category.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
@@ -23,21 +25,29 @@ class PostService {
             as: 'comments',
             required: false,
           },
+          {
+            model: Reaction,
+            as: 'reactions',
+            where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+          },
         ],
         order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']],
       });
     }
 
-    if (user.role === ROLE.user && filter.userId === user.userId) {
-      whereCondition = {
-        userId: filter.userId,
-      };
-    } else {
-      whereCondition = {
-        status: POST_STATUS.public,
-        userId: filter.userId,
-      };
-    }
+    // if (user.role === ROLE.user) {
+    whereCondition = {
+      [Op.or]: [
+        {status: POST_STATUS.public},
+        {status: POST_STATUS.private}
+      ]
+    };
+    // } else {
+    //   whereCondition = {
+    //     status: POST_STATUS.public,
+    //     // userId: filter.userId,
+    //   };
+    // }
 
     return Post.findAll({
       include: [
@@ -45,6 +55,12 @@ class PostService {
           model: Comment,
           as: 'comments',
           required: false,
+        },
+        {
+          model: Reaction,
+          as: 'reactions',
+          required: false,
+          where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
         },
       ],
       where: whereCondition,
