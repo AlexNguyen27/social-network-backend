@@ -35,6 +35,10 @@ class User extends Model {
 
   public role: string;
 
+  public quote: string;
+
+  public dob: Date;
+
   public createdAt: Date;
 
   public updatedAt: Date;
@@ -55,6 +59,7 @@ class User extends Model {
     // https://sequelize.org/master/manual/assocs.html
     this.belongsToMany(Post, {
       foreignKey: 'userId',
+      as: 'userId',
       through: Reaction,
     });
 
@@ -63,16 +68,26 @@ class User extends Model {
       through: Report,
     });
 
-    this.belongsToMany(User, {
+    // this.belongsToMany(User, {
+    //   foreignKey: 'fromUserId',
+    //   as: 'fromUser',
+    //   through: Follower,
+    // });
+    // this.belongsToMany(User, {
+    //   as: 'toUser',
+    //   foreignKey: 'toUserId',
+    //   through: Follower,
+    // });
+
+    this.hasMany(Follower, {
+      as: 'followed',
       foreignKey: 'fromUserId',
-      as: 'fromUser',
-      through: Follower,
     });
-    this.belongsToMany(User, {
-      as: 'toUser',
-      foreignKey: 'toUserId',
-      through: Follower,
-    });
+
+    // this.hasMany(Follower, {
+    //   as: 'toUser',
+    //   foreignKey: 'toUserId',
+    // });
     // this.belongsToMany(Post, {
     //   foreignKey: 'userId',
     //   through: Comment,
@@ -137,6 +152,12 @@ User.init(
     },
     imageUrl: {
       type: DataTypes.TEXT,
+    },
+    quote: {
+      type: DataTypes.TEXT,
+    },
+    dob: {
+      type: DataTypes.DATEONLY,
     },
     githubUsername: {
       type: DataTypes.TEXT,

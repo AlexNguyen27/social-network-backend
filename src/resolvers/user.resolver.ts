@@ -8,8 +8,12 @@ import { ROLE } from '../components/constants';
 const resolver = {
   Query: {
     getUsers: middleware(
-      tokenValidation(ROLE.admin),
+      tokenValidation(ROLE.admin, ROLE.user),
       () => UserService.getUsers()
+    ),
+    getUserProfile: middleware(
+      tokenValidation(ROLE.admin, ROLE.user),
+      (_: any, args: any, { user }: any) => UserService.getUserProfile(args, user)
     ),
   },
   Mutation: {

@@ -3,10 +3,14 @@ import User from '../models/user.model';
 import Post from '../models/post.model';
 import { ExistsError } from '../components/errors';
 import Comment from '../models/comment.model';
+import Reaction from '../models/reaction.model';
+import Follower from '../models/follower.model';
+import ReactionType from '../models/reactionType.model';
+import { Op } from 'sequelize';
 
 class UserService {
-  static getUsers() {
-    return User.findAll({
+  static async getUsers() {
+    const users = await User.findAll({
       include: [
         {
           model: Post,
@@ -16,10 +20,74 @@ class UserService {
               model: Comment,
               as: 'comments',
             },
+            {
+              model: Reaction,
+              as: 'reactions',
+              where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+            },
           ],
         },
       ],
+      order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']],
     });
+
+    console.log(users)
+    return users;
+  }
+
+  static async getUserProfile(data: any, user: any) {
+    console.log(data)
+
+    const reactionLike: any = await ReactionType.findOne({ where: { name: "like" }, attributes: ['id'] });
+    const { id: reactionLikeId } = reactionLike.dataValues;
+    // console.log(reactionLike.dataValues.id);
+
+    const userProfile: any = await User.findOne({
+      where: { id: data.userId },
+      include: [
+        {
+          model: Post,
+          as: 'posts',
+          include: [
+            {
+              model: Comment,
+              as: 'comments',
+              required: false
+            },
+            {
+              model: Reaction,
+              as: 'reactions',
+              required: false,
+              where: { reactionTypeId: reactionLikeId }
+            }
+          ],
+        },
+        {
+          model: Follower,
+          as: 'followed',
+        }
+      ],
+      order: [['posts', 'createdAt', 'DESC']],
+    });
+
+    // todo: fix status to public
+    const userFavoritePosts = await Post.findAll({
+      include: [
+        {
+          model: Reaction,
+          as: 'reactions',
+          where: {
+            [Op.and]: [
+              { reactionTypeId: reactionLikeId },
+              { userId: data.userId }
+            ]
+          }
+        }
+      ]
+    })
+
+    userProfile.userFavoritePosts = userFavoritePosts;
+    return userProfile;
   }
 
   static async findUserById(id: string) {
