@@ -23,6 +23,8 @@ const typeDef = `
     description: String,
     imageUrl: String
     status: String
+    post: Post
+    user: User
     createdAt: DateTime
     updatedAt: DateTime
   }

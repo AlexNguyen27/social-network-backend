@@ -37,6 +37,7 @@ const typeDef = `
     imageUrl: String,
     status: String,
     categoryId: String,
+    user: User,
     comments: [Comment],
     reactions: [Reaction]
     createdAt: DateTime,
