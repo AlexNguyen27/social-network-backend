@@ -9,6 +9,7 @@ import CategoryService from './category.service';
 import { AuthenticationError } from '../components/errors/businessErrors';
 import Reaction from '../models/reaction.model';
 import User from '../models/user.model';
+import Category from '../models/category.model';
 // import Category from '../models/category.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
@@ -31,6 +32,14 @@ class PostService {
             as: 'reactions',
             where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
           },
+          {
+            model: Category,
+            as: 'category',
+          },
+          {
+            model: User,
+            as: 'user',
+          },
         ],
         order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']],
       });
@@ -52,6 +61,14 @@ class PostService {
 
     return Post.findAll({
       include: [
+        {
+          model: Category,
+          as: 'category',
+        },
+        {
+          model: User,
+          as: 'user',
+        },
         {
           model: Comment,
           as: 'comments',
@@ -88,13 +105,16 @@ class PostService {
       where: { id },
       include: [
         {
-          model: Comment,
-          as: 'comments',
-          required: false,
-        },
-        {
           model: User,
           as: 'user',
+        },
+        {
+          model: Category,
+          as: 'category',
+        },
+        {
+          model: Comment,
+          as: 'comments',
           required: false,
         },
         {
