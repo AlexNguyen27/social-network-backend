@@ -46,17 +46,17 @@ class ReportService {
         ],
       },
     }).then((report) => {
-      if (!report) throw new ExistsError('Category not found');
+      if (!report) throw new ExistsError('Report not found');
       return report;
     });
   }
 
-  // TODO : ONLY ADMIN CAN UPDATE REPORT
+  // TODO : ONLY ADMIN CAN UPDATE REPORT => GET ROLE AT TOKEN
   static async updateRerport(data: any) {
     console.log('data------------------', data);
     const { reportedBy, postId } = data;
     await this.findReportById(reportedBy, postId);
-    await Report.update(data, {
+    await Report.update({ description: data.description, status: data.status }, {
       where:
       {
         [Op.and]: [
@@ -66,7 +66,7 @@ class ReportService {
       },
     });
 
-    const currentReport = await this.findReportById(data.id, postId);
+    const currentReport = await this.findReportById(reportedBy, postId);
     return currentReport;
   }
 

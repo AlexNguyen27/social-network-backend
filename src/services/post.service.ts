@@ -8,6 +8,7 @@ import { Op } from 'sequelize';
 import CategoryService from './category.service';
 import { AuthenticationError } from '../components/errors/businessErrors';
 import Reaction from '../models/reaction.model';
+import User from '../models/user.model';
 // import Category from '../models/category.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
@@ -38,8 +39,8 @@ class PostService {
     // if (user.role === ROLE.user) {
     whereCondition = {
       [Op.or]: [
-        {status: POST_STATUS.public},
-        {status: POST_STATUS.private}
+        { status: POST_STATUS.public },
+        { status: POST_STATUS.private }
       ]
     };
     // } else {
@@ -83,7 +84,27 @@ class PostService {
   }
 
   static findPostById({ id }: { id: string }) {
-    return Post.findOne({ where: { id } }).then((post) => {
+    return Post.findOne({
+      where: { id },
+      include: [
+        {
+          model: Comment,
+          as: 'comments',
+          required: false,
+        },
+        {
+          model: User,
+          as: 'user',
+          required: false,
+        },
+        {
+          model: Reaction,
+          as: 'reactions',
+          required: false,
+          where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+        },
+      ],
+    }).then((post) => {
       if (!post) throw new ExistsError('Post not found');
       return { ...post.toJSON() };
     });
