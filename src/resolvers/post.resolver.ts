@@ -32,6 +32,7 @@ const resolver = {
       tokenValidation(ROLE.admin, ROLE.user),
       schemaValidation({
         id: joi.string().uuid(),
+        categoryId: joi.string().uuid(),
         title: joi.string(),
         description: joi.string(),
         imageUrl: joi.string(),

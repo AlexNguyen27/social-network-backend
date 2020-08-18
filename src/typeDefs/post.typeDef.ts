@@ -24,6 +24,7 @@ const typeDef = `
       description: String
       imageUrl: String
       status: String
+      categoryId: String
     ): Post,
 
     deletePost(id: String!): SuccessMessage
@@ -38,6 +39,7 @@ const typeDef = `
     status: String,
     categoryId: String,
     user: User,
+    category: Category
     comments: [Comment],
     reactions: [Reaction]
     createdAt: DateTime,
