@@ -22,7 +22,7 @@ class CategoryService {
         },
       ],
       where: whereCondition,
-      order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']],
+      order: [['createdAt', 'ASC'], ['posts', 'createdAt', 'DESC']],
     });
   }
 
