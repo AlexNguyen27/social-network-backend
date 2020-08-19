@@ -7,22 +7,32 @@ import Reaction from '../models/reaction.model';
 import Follower from '../models/follower.model';
 import ReactionType from '../models/reactionType.model';
 import { Op } from 'sequelize';
+import { POST_STATUS, ROLE } from '../components/constants';
 
 class UserService {
-  static async getUsers() {
+  static async getUsers(user: any) {
+    let whereCondition;
+    if (user.role === ROLE.user) {
+      whereCondition = {
+        status: POST_STATUS.public
+      }
+    }
     const users = await User.findAll({
       include: [
         {
           model: Post,
           as: 'posts',
+          where: whereCondition,
           include: [
             {
               model: Comment,
               as: 'comments',
+              required: false
             },
             {
               model: Reaction,
               as: 'reactions',
+              required: false,
               where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
             },
           ],

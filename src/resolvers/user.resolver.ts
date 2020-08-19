@@ -9,7 +9,7 @@ const resolver = {
   Query: {
     getUsers: middleware(
       tokenValidation(ROLE.admin, ROLE.user),
-      () => UserService.getUsers()
+      (_: any, args: any, { user }: any) => UserService.getUsers(user)
     ),
     getUserProfile: middleware(
       tokenValidation(ROLE.admin, ROLE.user),
