@@ -7,7 +7,7 @@ import FollowerService from '../services/follwer.service';
 const resolver = {
   Mutation: {
     createFollower: middleware(
-      tokenValidation(ROLE.user),
+      tokenValidation(ROLE.user, ROLE.admin),
       schemaValidation({
         toUserId: joi.string().uuid(),
       }),

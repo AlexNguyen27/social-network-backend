@@ -43,6 +43,8 @@ Report.init({
       model: 'USER',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
   postId: {
     type: DataTypes.UUID,
@@ -52,6 +54,8 @@ Report.init({
       model: 'POST',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
   reason: {
     type: DataTypes.TEXT,
