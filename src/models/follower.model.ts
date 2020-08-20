@@ -32,6 +32,8 @@ Follower.init({
       model: 'USER',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
   toUserId: {
     type: DataTypes.UUID,
@@ -40,6 +42,8 @@ Follower.init({
       model: 'USER',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
   createdAt: {
     type: DataTypes.DATE,

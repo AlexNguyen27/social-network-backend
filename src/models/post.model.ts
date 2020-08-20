@@ -100,6 +100,8 @@ Post.init({
       model: 'USER',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
   categoryId: {
     type: DataTypes.UUID,

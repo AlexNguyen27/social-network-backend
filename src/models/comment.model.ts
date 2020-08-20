@@ -57,6 +57,8 @@ Comment.init({
       model: 'USER',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
   postId: {
     type: DataTypes.UUID,
@@ -68,6 +70,8 @@ Comment.init({
       model: 'POST',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   },
 }, {
   sequelize,

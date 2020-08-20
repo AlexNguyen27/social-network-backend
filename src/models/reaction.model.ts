@@ -54,6 +54,8 @@ Reaction.init({
       model: 'POST',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   reactionTypeId: {
     type: DataTypes.UUID,
@@ -65,6 +67,8 @@ Reaction.init({
       model: 'ReactionType',
       key: 'id',
     },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
 }, {
   sequelize,
