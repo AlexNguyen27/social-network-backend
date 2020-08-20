@@ -10,6 +10,7 @@ import { AuthenticationError } from '../components/errors/businessErrors';
 import Reaction from '../models/reaction.model';
 import User from '../models/user.model';
 import Category from '../models/category.model';
+import { truncateMultilineString } from '../utils/formatString';
 // import Category from '../models/category.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
@@ -20,7 +21,7 @@ class PostService {
     let whereCondition;
     // ADMIN
     if (filter.all) {
-      return Post.findAll({
+      const allPosts =  Post.findAll({
         include: [
           {
             model: Comment,
@@ -43,23 +44,23 @@ class PostService {
         ],
         order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']],
       });
+
+      let formatedAllPosts: any = allPosts;
+      formatedAllPosts = formatedAllPosts.map((item: any) => ({
+        ...item,
+        description: truncateMultilineString(item.description, 200),
+      }));
+      return formatedAllPosts;
     }
 
-    // if (user.role === ROLE.user) {
     whereCondition = {
       [Op.or]: [
         { status: POST_STATUS.public },
         { status: POST_STATUS.private }
       ]
     };
-    // } else {
-    //   whereCondition = {
-    //     status: POST_STATUS.public,
-    //     // userId: filter.userId,
-    //   };
-    // }
 
-    return Post.findAll({
+    const posts = Post.findAll({
       include: [
         {
           model: Category,
@@ -84,6 +85,13 @@ class PostService {
       where: whereCondition,
       order: [['createdAt', 'DESC'], ['comments', 'createdAt', 'DESC']],
     });
+    let formatedPosts: any = posts;
+    formatedPosts = formatedPosts.map((item: any) => ({
+      ...item,
+      ...item.dataValues,
+      description: truncateMultilineString(item.description, 200),
+    }));
+    return formatedPosts;
   }
 
   static async createPost(data: any) {
