@@ -6,6 +6,7 @@ import Comment from '../models/comment.model';
 import Reaction from '../models/reaction.model';
 import Follower from '../models/follower.model';
 import ReactionType from '../models/reactionType.model';
+import { truncateMultilineString } from '../utils/formatString';
 import { Op } from 'sequelize';
 import { POST_STATUS, ROLE } from '../components/constants';
 
@@ -96,7 +97,12 @@ class UserService {
       ]
     })
 
-    userProfile.userFavoritePosts = userFavoritePosts;
+    let formatedPost: any = userFavoritePosts;
+    formatedPost = formatedPost.map((item: any) => ({
+      ...item.dataValues,
+      description: truncateMultilineString(item.description, 200)
+    }));
+    userProfile.userFavoritePosts = formatedPost;
     return userProfile;
   }
 
