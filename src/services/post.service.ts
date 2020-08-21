@@ -150,6 +150,13 @@ class PostService {
         {
           model: Comment,
           as: 'comments',
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'firstName', 'lastName', 'imageUrl']
+            }
+          ],
           required: false,
         },
         {

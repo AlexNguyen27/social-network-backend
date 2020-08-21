@@ -91,6 +91,14 @@ class UserService {
       order: [['posts', 'createdAt', 'DESC']],
     });
 
+    let fromatedUserPosts = userProfile.posts;
+    fromatedUserPosts = fromatedUserPosts.map((item: any) => ({
+      ...item.dataValues,
+      description: truncateMultilineString(item.description, 200)
+    }));
+
+    userProfile.posts = fromatedUserPosts;
+
     // todo: fix status to public
     const userFavoritePosts = await Post.findAll({
       include: [
