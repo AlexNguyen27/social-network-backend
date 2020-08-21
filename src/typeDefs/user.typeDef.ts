@@ -13,6 +13,13 @@ const typeDef = `
     ): User,
 
     deleteUser(id: String!): SuccessMessage,
+
+    changePassword(
+      userId: String,
+      currentPassword: String!,
+      newPassword: String!,
+      confirmPassword: String!,
+    ): SuccessMessage
   }
 
   type UserProfile {
