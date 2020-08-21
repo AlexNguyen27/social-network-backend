@@ -1,7 +1,7 @@
 import { AuthenticationError } from 'apollo-server';
 import User from '../models/user.model';
 import Post from '../models/post.model';
-import { ExistsError } from '../components/errors';
+import { ExistsError, BusinessError } from '../components/errors';
 import Comment from '../models/comment.model';
 import Reaction from '../models/reaction.model';
 import Follower from '../models/follower.model';
@@ -9,6 +9,7 @@ import ReactionType from '../models/reactionType.model';
 import { truncateMultilineString } from '../utils/formatString';
 import { Op } from 'sequelize';
 import { POST_STATUS, ROLE } from '../components/constants';
+import bcrypt from 'bcrypt';
 
 class UserService {
   static async getUsers(user: any) {
@@ -169,6 +170,40 @@ class UserService {
     } catch (err) {
       throw err;
     }
+  }
+
+  static async changePassword(data: any, user: any) {
+    const { userId, currentPassword, newPassword, confirmPassword } = data;
+
+    // ADMIN CAN UPDATE PASSWORD USER
+    if (userId && user.role === ROLE.user) {
+      throw new AuthenticationError("Your role is not allowed!");
+    }
+
+    // ADMIN => USERID OR TOKEN ID
+    // USER => TOKEN ID
+    const id = user.role === ROLE.admin ? userId || user.id : user.id;
+
+    const userData: any = await this.findUserById(id);
+
+    const match = await bcrypt.compare(currentPassword, userData.password);
+    if (!match) {
+      throw new AuthenticationError('Current password is incorrect!');
+    }
+
+    if (newPassword.trim().length < 6 || newPassword.trim().length > 42) {
+      throw new BusinessError('Password must be more than 6 and 42 characters');
+    }
+    if (newPassword !== confirmPassword) {
+      throw new BusinessError("Confirm password did not match!");
+    }
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+    // ALREADY CATCH ERROR AT MODEL WHEN PASSWORD TO SHORT
+    await User.update({ password: hashPassword }, { where: { id } });
+    return {
+      status: 200,
+      message: 'Change password successfully',
+    };
   }
 }
 

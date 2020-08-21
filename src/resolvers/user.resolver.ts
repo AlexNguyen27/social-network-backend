@@ -1,6 +1,4 @@
 import joi from 'joi';
-
-import { UpdateUserInput } from 'src/types/user.type';
 import { middleware, tokenValidation } from '../components';
 import UserService from '../services/user.service';
 import { ROLE } from '../components/constants';
@@ -25,6 +23,10 @@ const resolver = {
       tokenValidation(ROLE.admin),
       (_: any, args: any) => UserService.deleteUser(args),
     ),
+    changePassword: middleware(
+      tokenValidation(ROLE.admin, ROLE.user),
+      (_: any, args: any, { user }: any) => UserService.changePassword(args, user),
+    )
   },
 };
 
