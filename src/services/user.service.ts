@@ -12,18 +12,26 @@ import { POST_STATUS, ROLE } from '../components/constants';
 
 class UserService {
   static async getUsers(user: any) {
-    let whereCondition;
+    let wherePost;
+    let whereUser;
+
     if (user.role === ROLE.user) {
-      whereCondition = {
+      wherePost = {
         status: POST_STATUS.public
       }
+      whereUser = {
+        role: ROLE.user
+      }
     }
+
     const users = await User.findAll({
+      where: whereUser,
       include: [
         {
           model: Post,
           as: 'posts',
-          where: whereCondition,
+          where: wherePost,
+          required: false,
           include: [
             {
               model: Comment,
@@ -76,6 +84,7 @@ class UserService {
         {
           model: Follower,
           as: 'followed',
+          required: false
         }
       ],
       order: [['posts', 'createdAt', 'DESC']],
@@ -93,7 +102,12 @@ class UserService {
               { userId: data.userId }
             ]
           }
-        }
+        },
+        {
+          model: Comment,
+          as: 'comments',
+          required: false
+        },
       ]
     })
 

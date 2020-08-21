@@ -11,17 +11,20 @@ import Reaction from '../models/reaction.model';
 import User from '../models/user.model';
 import Category from '../models/category.model';
 import { truncateMultilineString } from '../utils/formatString';
+import Follower from '../models/follower.model';
 // import Category from '../models/category.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
 // TODO: GET REACTION OF THE POST ALSO
 class PostService {
   // GET POST BY USER ID
-  static getPosts(filter: any, user: any) {
-    let whereCondition;
+  static async getPosts(filter: any, user: any) {
+    const { role, userId } = user;
+
+    let whereCondition: any;
     // ADMIN
     if (filter.all) {
-      const allPosts =  Post.findAll({
+      const allPosts = await Post.findAll({
         include: [
           {
             model: Comment,
@@ -53,14 +56,38 @@ class PostService {
       return formatedAllPosts;
     }
 
-    whereCondition = {
-      [Op.or]: [
-        { status: POST_STATUS.public },
-        { status: POST_STATUS.private }
-      ]
-    };
+    let followUsers;
+    if (role === ROLE.user) {
+      followUsers = await User.findAll({
+        where: { id: userId },
+        include: [
+          {
+            model: Follower,
+            as: 'followed',
+            attributes: ['toUserId']
+          }
+        ]
+      })
 
-    const posts = Post.findAll({
+      console.log(followUsers, '00000000000000000000')
+      whereCondition = {
+        [Op.and]: [
+          { userId: [...followUsers] },
+          { status: POST_STATUS.public },
+        ],
+
+      };
+    } else {
+      whereCondition = {
+        [Op.or]: [
+          { status: POST_STATUS.public },
+          { status: POST_STATUS.private }
+        ]
+      };
+    }
+
+
+    const posts = await Post.findAll({
       include: [
         {
           model: Category,
