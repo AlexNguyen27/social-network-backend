@@ -1,20 +1,31 @@
 import { Op } from 'sequelize';
 import Reaction from '../models/reaction.model';
 import { ExistsError } from '../components/errors';
+import ReactionType from '../models/reactionType.model';
 
 class ReactionService {
   static async createReaction({ userId, reactionTypeId, postId }: { userId: string; reactionTypeId: string; postId: string }) {
     const changeReactionType: any = await this.findReactionByUserIdPostId({ userId, postId });
-    if (changeReactionType && changeReactionType.reactionTypeId === reactionTypeId) {
-      return await this.deleteReaction({ userId, postId, reactionTypeId });
+
+    // GET REACTION TYPE
+    const reactionLike: any = await ReactionType.findOne({
+      where: { name: 'like' },
+      attributes: ['id']
+    });
+
+    const { id: reactionLikeId } = reactionLike;
+    console.log(reactionLikeId);
+
+    if (changeReactionType && changeReactionType.reactionTypeId === reactionLikeId) {
+      return await this.deleteReaction({ userId, postId, reactionTypeId: reactionLikeId });
     }
 
     if (!changeReactionType) {
-      const newReaction = await Reaction.create({ userId, postId, reactionTypeId });
+      const newReaction = await Reaction.create({ userId, postId, reactionTypeId: reactionLikeId });
       if (newReaction) return { status: 200, message: 'Create successfully' };
     }
 
-    return await this.updateReactionType({ userId, reactionTypeId, postId });
+    return await this.updateReactionType({ userId, reactionTypeId: reactionLikeId, postId });
   }
 
   static findReactionByUserIdPostId({ userId, postId }: { userId: string; postId: string }) {
