@@ -58,34 +58,22 @@ class PostService {
 
     let followUsers;
     if (role === ROLE.user) {
-      followUsers = await User.findAll({
-        where: { id: userId },
-        include: [
-          {
-            model: Follower,
-            as: 'followed',
-            attributes: ['toUserId']
-          }
-        ]
+      followUsers = await Follower.findAll({
+        where: { fromUserId: userId },
+        attributes: ['toUserId']
       })
 
-      console.log(followUsers, '00000000000000000000')
+      const followedUserArr = followUsers.map(item => item.toUserId)
+      const test = [...followedUserArr, userId];
+      console.log(followUsers, test);
       whereCondition = {
         [Op.and]: [
-          { userId: [...followUsers] },
+          { userId: [...followedUserArr, userId] },
           { status: POST_STATUS.public },
         ],
 
       };
-    } else {
-      whereCondition = {
-        [Op.or]: [
-          { status: POST_STATUS.public },
-          { status: POST_STATUS.private }
-        ]
-      };
     }
-
 
     const posts = await Post.findAll({
       include: [
@@ -150,6 +138,13 @@ class PostService {
         {
           model: Comment,
           as: 'comments',
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['username', 'firstName', 'lastName', 'imageUrl']
+            }
+          ],
           required: false,
         },
         {
