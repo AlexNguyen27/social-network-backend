@@ -20,9 +20,6 @@ class UserService {
       wherePost = {
         status: POST_STATUS.public
       }
-      whereUser = {
-        role: ROLE.user
-      }
     }
 
     const users = await User.findAll({
@@ -45,6 +42,10 @@ class UserService {
               required: false,
               where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
             },
+            {
+              model: User,
+              as: 'user',
+            },
           ],
         },
       ],
@@ -62,12 +63,22 @@ class UserService {
     const { id: reactionLikeId } = reactionLike.dataValues;
     // console.log(reactionLike.dataValues.id);
 
+    let wherePost: any;
+    // GET FRIEND_PROFILE
+    if (user.userId !== data.userId) {
+      wherePost = {
+        status: POST_STATUS.public
+      }
+    }
+
     const userProfile: any = await User.findOne({
       where: { id: data.userId },
       include: [
         {
           model: Post,
           as: 'posts',
+          where: wherePost,
+          required: false,
           include: [
             {
               model: Comment,
@@ -79,7 +90,11 @@ class UserService {
               as: 'reactions',
               required: false,
               where: { reactionTypeId: reactionLikeId }
-            }
+            },
+            {
+              model: User,
+              as: 'user',
+            },
           ],
         },
         {
@@ -111,6 +126,10 @@ class UserService {
               { userId: data.userId }
             ]
           }
+        },
+        {
+          model: User,
+          as: 'user',
         },
         {
           model: Comment,
