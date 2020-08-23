@@ -14,7 +14,6 @@ class ReactionService {
     });
 
     const { id: reactionLikeId } = reactionLike;
-    console.log(reactionLikeId);
 
     if (changeReactionType && changeReactionType.reactionTypeId === reactionLikeId) {
       return await this.deleteReaction({ userId, postId, reactionTypeId: reactionLikeId });

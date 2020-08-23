@@ -70,7 +70,6 @@ class PostService {
 
       const followedUserArr = followUsers.map(item => item.toUserId)
       const test = [...followedUserArr, userId];
-      console.log(followUsers, test);
       whereCondition = {
         [Op.and]: [
           { userId: [...followedUserArr, userId] },
