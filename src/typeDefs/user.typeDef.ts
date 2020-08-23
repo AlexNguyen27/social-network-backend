@@ -41,6 +41,7 @@ const typeDef = `
     posts: [Post]
     followed: [Follower]
     userFavoritePosts: [Post]
+    totalFollowers: Int
   }
 
   input InfoInput {
