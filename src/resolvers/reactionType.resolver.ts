@@ -4,6 +4,12 @@ import { middleware, tokenValidation, schemaValidation } from '../components';
 import { ROLE } from '../components/constants';
 
 const resolver = {
+  Query: {
+    getReactionTypes: middleware(
+      tokenValidation(ROLE.admin, ROLE.user),
+      (_: any, args: any) => ReactionType.getReactionTypes(),
+    ),
+  },
   Mutation: {
     createReactionType: middleware(
       tokenValidation(ROLE.admin),
