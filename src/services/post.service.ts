@@ -125,7 +125,9 @@ class PostService {
     await UserService.findUserById(userId);
     await CategoryService.findCategoryById(categoryId);
 
-    return Post.create({ ...data });
+    const newPost = await Post.create({ ...data });
+
+    return await this.findPostById({ id: newPost.id });
   }
 
   static findPostById({ id }: { id: string }) {
