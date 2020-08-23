@@ -53,7 +53,6 @@ class ReportService {
 
   // TODO : ONLY ADMIN CAN UPDATE REPORT => GET ROLE AT TOKEN
   static async updateRerport(data: any) {
-    console.log('data------------------', data);
     const { reportedBy, postId } = data;
     await this.findReportById(reportedBy, postId);
     await Report.update({ description: data.description, status: data.status }, {

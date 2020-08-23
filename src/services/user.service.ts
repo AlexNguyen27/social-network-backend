@@ -52,13 +52,10 @@ class UserService {
       order: [['createdAt', 'DESC'], ['posts', 'createdAt', 'DESC']],
     });
 
-    console.log(users)
     return users;
   }
 
   static async getUserProfile(data: any, user: any) {
-    console.log(data)
-
     const reactionLike: any = await ReactionType.findOne({ where: { name: "like" }, attributes: ['id'] });
     const { id: reactionLikeId } = reactionLike.dataValues;
     // console.log(reactionLike.dataValues.id);
@@ -185,7 +182,6 @@ class UserService {
       delete data.username;
     }
     const res = await User.update(data, { where: { id: userId }, returning: true });
-    console.log('res---------------------', res[1]);
     const currentUser = await this.findUserById(userId);
     return currentUser;
   }

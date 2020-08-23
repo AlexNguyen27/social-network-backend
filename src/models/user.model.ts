@@ -138,8 +138,8 @@ User.init(
       type: DataTypes.STRING,
       validate: {
         len: {
-          args: [10, 11],
-          msg: "Phone number must be 10 or 11 numbers",
+          args: [10, 10],
+          msg: "Phone number must be 10 numbers",
         }
       }
     },
