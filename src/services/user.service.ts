@@ -116,6 +116,7 @@ class UserService {
 
     // todo: fix status to public
     const userFavoritePosts = await Post.findAll({
+      where: { status: 'public' },
       include: [
         {
           model: Reaction,

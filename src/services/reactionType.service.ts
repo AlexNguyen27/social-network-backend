@@ -8,6 +8,10 @@ class ReactionTypeService {
     });
   }
 
+  static async getReactionTypes() {
+    return ReactionType.findAll();
+  }
+
   static findReactionTypeById(id: string) {
     return ReactionType.findOne({ where: { id } }).then((ReactionType) => {
       if (!ReactionType) throw new ExistsError('ReactionType not found');
