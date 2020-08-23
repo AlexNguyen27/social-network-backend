@@ -17,14 +17,17 @@ import Follower from '../models/follower.model';
 // TODO: AADD GET POST BY FOLLOWER ID
 // TODO: GET REACTION OF THE POST ALSO
 class PostService {
-  // GET POST BY USER ID
+
+  // GET ALL POSTS
   static async getPosts(filter: any, user: any) {
     const { role, userId } = user;
 
     let whereCondition: any;
-    // ADMIN
+
+    // GET ALL PUBLIC POST FOR SEARCHING
     if (filter.all) {
       const allPosts = await Post.findAll({
+        where: { status: POST_STATUS.public },
         include: [
           {
             model: Comment,
@@ -34,6 +37,7 @@ class PostService {
           {
             model: Reaction,
             as: 'reactions',
+            required: false,
             where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
           },
           {
@@ -51,6 +55,7 @@ class PostService {
       let formatedAllPosts: any = allPosts;
       formatedAllPosts = formatedAllPosts.map((item: any) => ({
         ...item,
+        ...item.dataValues,
         description: truncateMultilineString(item.description, 200),
       }));
       return formatedAllPosts;
