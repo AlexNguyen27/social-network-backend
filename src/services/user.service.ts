@@ -146,6 +146,12 @@ class UserService {
       description: truncateMultilineString(item.description, 200)
     }));
     userProfile.userFavoritePosts = formatedPost;
+
+    // FOLLOW BY HOW MANY USERS
+    const totalFollowers = await Follower.findAndCountAll({
+      where: { toUserId: data.userId }
+    })
+    userProfile.totalFollowers = totalFollowers.count;
     return userProfile;
   }
 
