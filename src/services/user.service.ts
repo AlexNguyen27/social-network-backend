@@ -22,6 +22,14 @@ class UserService {
       }
     }
 
+    // GET REACTION TYPE
+    const reactionLike: any = await ReactionType.findOne({
+      where: { name: 'like' },
+      attributes: ['id']
+    });
+
+    const { id: reactionLikeId } = reactionLike;
+
     const users = await User.findAll({
       where: whereUser,
       include: [
@@ -40,7 +48,7 @@ class UserService {
               model: Reaction,
               as: 'reactions',
               required: false,
-              where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+              where: { reactionTypeId: reactionLikeId }
             },
             {
               model: User,
