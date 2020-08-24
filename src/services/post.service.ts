@@ -12,7 +12,7 @@ import User from '../models/user.model';
 import Category from '../models/category.model';
 import { truncateMultilineString } from '../utils/formatString';
 import Follower from '../models/follower.model';
-// import Category from '../models/category.model';
+import ReactionType from '../models/reactionType.model';
 
 // TODO: AADD GET POST BY FOLLOWER ID
 // TODO: GET REACTION OF THE POST ALSO
@@ -23,6 +23,14 @@ class PostService {
     const { role, userId } = user;
 
     let whereCondition: any;
+
+     // GET REACTION TYPE LIKE
+     const reactionLike: any = await ReactionType.findOne({
+      where: { name: 'like' },
+      attributes: ['id']
+    });
+
+    const { id: reactionLikeId } = reactionLike;
 
     // GET ALL PUBLIC POST FOR SEARCHING
     if (filter.all) {
@@ -38,7 +46,7 @@ class PostService {
             model: Reaction,
             as: 'reactions',
             required: false,
-            where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+            where: { reactionTypeId: reactionLikeId }
           },
           {
             model: Category,
@@ -98,7 +106,7 @@ class PostService {
           model: Reaction,
           as: 'reactions',
           required: false,
-          where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+          where: { reactionTypeId: reactionLikeId }
         },
       ],
       where: whereCondition,
@@ -129,7 +137,15 @@ class PostService {
     return await this.findPostById({ id: newPost.id });
   }
 
-  static findPostById({ id }: { id: string }) {
+  static async findPostById({ id }: { id: string }) {
+     // GET REACTION TYPE LIKE
+     const reactionLike: any = await ReactionType.findOne({
+      where: { name: 'like' },
+      attributes: ['id']
+    });
+
+    const { id: reactionLikeId } = reactionLike;
+
     return Post.findOne({
       where: { id },
       include: [
@@ -157,7 +173,7 @@ class PostService {
           model: Reaction,
           as: 'reactions',
           required: false,
-          where: { reactionTypeId: '9d31b9c1-e375-4dc5-9335-0c8879695163' }
+          where: { reactionTypeId: reactionLikeId }
         },
       ],
     }).then((post) => {
