@@ -66,7 +66,6 @@ class UserService {
   static async getUserProfile(data: any, user: any) {
     const reactionLike: any = await ReactionType.findOne({ where: { name: "like" }, attributes: ['id'] });
     const { id: reactionLikeId } = reactionLike.dataValues;
-    // console.log(reactionLike.dataValues.id);
 
     let wherePost: any;
     // GET FRIEND_PROFILE
@@ -119,7 +118,6 @@ class UserService {
 
     userProfile.posts = fromatedUserPosts;
 
-    // todo: fix status to public
     const userFavoritePosts = await Post.findAll({
       where: { status: 'public' },
       include: [
