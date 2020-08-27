@@ -59,13 +59,14 @@ class CommentService {
   static async deleteComment({ id }: { id: string }) {
     await this.findCommentById(id);
 
-    const hasChildsCmt = await Comment.findAll({
-      where: { parentId: id },
-    });
+    // const hasChildsCmt = await Comment.findAll({
+    //   where: { parentId: id },
+    // });
 
-    if (hasChildsCmt.length > 0) {
-      throw new ExistsError('This comment has child comment');
-    }
+    // if (hasChildsCmt.length > 0) {
+    //   // throw new ExistsError('This comment has child comment');
+
+    // }
 
     try {
       await Comment.destroy({ where: { id } });
