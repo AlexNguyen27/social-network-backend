@@ -24,6 +24,8 @@ class Post extends Model {
 
   public userId: string;
 
+  public view: number;
+
   public createdAt: Date;
 
   public updatedAt: Date;
@@ -75,6 +77,10 @@ Post.init({
     validate: {
       notEmpty: true,
     },
+  },
+  view: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
   },
   description: {
     type: DataTypes.TEXT,

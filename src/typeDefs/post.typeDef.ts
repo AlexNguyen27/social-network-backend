@@ -39,6 +39,7 @@ const typeDef = `
     status: String,
     categoryId: String,
     user: User,
+    view: Float,
     category: Category
     comments: [Comment],
     reactions: [Reaction]

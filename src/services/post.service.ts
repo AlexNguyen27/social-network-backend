@@ -24,8 +24,8 @@ class PostService {
 
     let whereCondition: any;
 
-     // GET REACTION TYPE LIKE
-     const reactionLike: any = await ReactionType.findOne({
+    // GET REACTION TYPE LIKE
+    const reactionLike: any = await ReactionType.findOne({
       where: { name: 'like' },
       attributes: ['id']
     });
@@ -130,6 +130,8 @@ class PostService {
     // CHECK IF USER AND CATEGORY EXITS
     await UserService.findUserById(userId);
     await CategoryService.findCategoryById(categoryId);
+    // FIRST VIEW POST = 0
+    data.view = 0;
 
     const newPost = await Post.create({ ...data });
 
@@ -137,48 +139,55 @@ class PostService {
   }
 
   static async findPostById({ id }: { id: string }) {
-     // GET REACTION TYPE LIKE
-     const reactionLike: any = await ReactionType.findOne({
+    // GET REACTION TYPE LIKE
+    const reactionLike: any = await ReactionType.findOne({
       where: { name: 'like' },
       attributes: ['id']
     });
 
     const { id: reactionLikeId } = reactionLike;
+    let post: any;
+    try {
+      post = await Post.findOne({
+        where: { id },
+        include: [
+          {
+            model: User,
+            as: 'user',
+          },
+          {
+            model: Category,
+            as: 'category',
+          },
+          {
+            model: Comment,
+            as: 'comments',
+            include: [
+              {
+                model: User,
+                as: 'user',
+                attributes: ['username', 'firstName', 'lastName', 'imageUrl']
+              }
+            ],
+            required: false,
+          },
+          {
+            model: Reaction,
+            as: 'reactions',
+            required: false,
+            where: { reactionTypeId: reactionLikeId }
+          },
+        ],
 
-    return Post.findOne({
-      where: { id },
-      include: [
-        {
-          model: User,
-          as: 'user',
-        },
-        {
-          model: Category,
-          as: 'category',
-        },
-        {
-          model: Comment,
-          as: 'comments',
-          include: [
-            {
-              model: User,
-              as: 'user',
-              attributes: ['username', 'firstName', 'lastName', 'imageUrl']
-            }
-          ],
-          required: false,
-        },
-        {
-          model: Reaction,
-          as: 'reactions',
-          required: false,
-          where: { reactionTypeId: reactionLikeId }
-        },
-      ],
-    }).then((post) => {
-      if (!post) throw new ExistsError('Post not found');
+      })
+
+      post.increment('view');
+
       return { ...post.toJSON() };
-    });
+    } catch (error) {
+      if (!post) throw new ExistsError('Post not found');
+      throw error;
+    }
   }
 
   static async updatePost(data: any, user: any) {
