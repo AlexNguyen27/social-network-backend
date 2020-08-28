@@ -64,7 +64,7 @@ class PostService {
       formatedAllPosts = formatedAllPosts.map((item: any) => ({
         ...item,
         ...item.dataValues,
-        description: truncateMultilineString(item.description, 200),
+        description: truncateMultilineString(item.description, 350),
       }));
       return formatedAllPosts;
     }
@@ -115,7 +115,7 @@ class PostService {
     formatedPosts = formatedPosts.map((item: any) => ({
       ...item,
       ...item.dataValues,
-      description: truncateMultilineString(item.description, 200),
+      description: truncateMultilineString(item.description, 350),
     }));
     return formatedPosts;
   }

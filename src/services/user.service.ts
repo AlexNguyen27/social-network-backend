@@ -113,7 +113,7 @@ class UserService {
     let fromatedUserPosts = userProfile.posts;
     fromatedUserPosts = fromatedUserPosts.map((item: any) => ({
       ...item.dataValues,
-      description: truncateMultilineString(item.description, 200)
+      description: truncateMultilineString(item.description, 350)
     }));
 
     userProfile.posts = fromatedUserPosts;
@@ -146,7 +146,7 @@ class UserService {
     let formatedPost: any = userFavoritePosts;
     formatedPost = formatedPost.map((item: any) => ({
       ...item.dataValues,
-      description: truncateMultilineString(item.description, 200)
+      description: truncateMultilineString(item.description, 350)
     }));
     userProfile.userFavoritePosts = formatedPost;
 
