@@ -182,6 +182,7 @@ class PostService {
       })
 
       post.increment('view');
+      post.view = Number(post.view);
 
       return { ...post.toJSON() };
     } catch (error) {
